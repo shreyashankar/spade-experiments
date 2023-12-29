@@ -1,0 +1,1615 @@
+func A,func B,A -> B,asked_LLM
+"async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+","async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+",True,True
+"async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+","async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+",True,True
+"async def workflow_description_assert1(example: dict, prompt: str, response: str):
+    return ""summary of your understanding"" in response and ""feedback"" in response
+","async def feedback_inclusion_assert(example: dict, prompt: str, response: str):
+    return ""Feedback:"" in response
+",True,True
+"async def feedback_inclusion_assert(example: dict, prompt: str, response: str):
+    return ""Feedback:"" in response
+","async def workflow_description_assert1(example: dict, prompt: str, response: str):
+    return ""summary of your understanding"" in response and ""feedback"" in response
+",True,True
+"async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+","async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+",True,True
+"async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+","async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+",True,True
+"async def workflow_completed_correctly_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the LLM's response correctly complete the workflow described in the prompt, ""
+        ""including providing feedback on the user's understanding and being willing to accept a new summary?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def willing_to_accept_new_summary_assert(
+    example: dict, prompt: str, response: str
+):
+    expected_phrases = [
+        ""At any point during our discussion"",
+        ""please provide me with an updated summary"",
+        ""we can continue to delve deeper"",
+    ]
+    return any(phrase in response for phrase in expected_phrases)
+",True,True
+"async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+","async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+",False,False
+"async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+","async def workflow_description_assert1(example: dict, prompt: str, response: str):
+    return ""summary of your understanding"" in response and ""feedback"" in response
+",False,False
+"async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+","async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+",False,False
+"async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+","async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+","async def workflow_description_assert2(example: dict, prompt: str, response: str):
+    should_contain = [
+        ""please provide me with a summary of your current understanding"",
+        ""Feedback:"",
+        ""Now, let's explore"",
+        ""Your task is to"",
+    ]
+    return all(step in response for step in should_contain)
+",False,False
+"async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+","async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+",False,False
+"async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+","async def feedback_inclusion_assert(example: dict, prompt: str, response: str):
+    return ""Feedback:"" in response
+",False,False
+"async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+","async def word_count_assert(example: dict, prompt: str, response: str):
+    return 150 <= len(response.split()) <= 250
+",False,False
+"async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+","async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+",False,False
+"async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+","async def willing_to_accept_new_summary_assert(
+    example: dict, prompt: str, response: str
+):
+    expected_phrases = [
+        ""At any point during our discussion"",
+        ""please provide me with an updated summary"",
+        ""we can continue to delve deeper"",
+    ]
+    return any(phrase in response for phrase in expected_phrases)
+",False,False
+"async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+","async def workflow_completed_correctly_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the LLM's response correctly complete the workflow described in the prompt, ""
+        ""including providing feedback on the user's understanding and being willing to accept a new summary?""
+    )
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+","async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+",False,False
+"async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+","async def workflow_description_assert1(example: dict, prompt: str, response: str):
+    return ""summary of your understanding"" in response and ""feedback"" in response
+",False,False
+"async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+","async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+","async def workflow_description_assert2(example: dict, prompt: str, response: str):
+    should_contain = [
+        ""please provide me with a summary of your current understanding"",
+        ""Feedback:"",
+        ""Now, let's explore"",
+        ""Your task is to"",
+    ]
+    return all(step in response for step in should_contain)
+",False,False
+"async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+","async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+",True,False
+"async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+","async def feedback_inclusion_assert(example: dict, prompt: str, response: str):
+    return ""Feedback:"" in response
+",False,False
+"async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+","async def word_count_assert(example: dict, prompt: str, response: str):
+    return 150 <= len(response.split()) <= 250
+",False,False
+"async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+","async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+",False,False
+"async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+","async def willing_to_accept_new_summary_assert(
+    example: dict, prompt: str, response: str
+):
+    expected_phrases = [
+        ""At any point during our discussion"",
+        ""please provide me with an updated summary"",
+        ""we can continue to delve deeper"",
+    ]
+    return any(phrase in response for phrase in expected_phrases)
+",False,False
+"async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+","async def workflow_completed_correctly_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the LLM's response correctly complete the workflow described in the prompt, ""
+        ""including providing feedback on the user's understanding and being willing to accept a new summary?""
+    )
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def workflow_description_assert1(example: dict, prompt: str, response: str):
+    return ""summary of your understanding"" in response and ""feedback"" in response
+","async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+",False,False
+"async def workflow_description_assert1(example: dict, prompt: str, response: str):
+    return ""summary of your understanding"" in response and ""feedback"" in response
+","async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+",False,False
+"async def workflow_description_assert1(example: dict, prompt: str, response: str):
+    return ""summary of your understanding"" in response and ""feedback"" in response
+","async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+",False,False
+"async def workflow_description_assert1(example: dict, prompt: str, response: str):
+    return ""summary of your understanding"" in response and ""feedback"" in response
+","async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def workflow_description_assert1(example: dict, prompt: str, response: str):
+    return ""summary of your understanding"" in response and ""feedback"" in response
+","async def workflow_description_assert2(example: dict, prompt: str, response: str):
+    should_contain = [
+        ""please provide me with a summary of your current understanding"",
+        ""Feedback:"",
+        ""Now, let's explore"",
+        ""Your task is to"",
+    ]
+    return all(step in response for step in should_contain)
+",False,False
+"async def workflow_description_assert1(example: dict, prompt: str, response: str):
+    return ""summary of your understanding"" in response and ""feedback"" in response
+","async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+",False,False
+"async def workflow_description_assert1(example: dict, prompt: str, response: str):
+    return ""summary of your understanding"" in response and ""feedback"" in response
+","async def word_count_assert(example: dict, prompt: str, response: str):
+    return 150 <= len(response.split()) <= 250
+",False,False
+"async def workflow_description_assert1(example: dict, prompt: str, response: str):
+    return ""summary of your understanding"" in response and ""feedback"" in response
+","async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+",False,False
+"async def workflow_description_assert1(example: dict, prompt: str, response: str):
+    return ""summary of your understanding"" in response and ""feedback"" in response
+","async def willing_to_accept_new_summary_assert(
+    example: dict, prompt: str, response: str
+):
+    expected_phrases = [
+        ""At any point during our discussion"",
+        ""please provide me with an updated summary"",
+        ""we can continue to delve deeper"",
+    ]
+    return any(phrase in response for phrase in expected_phrases)
+",False,False
+"async def inquiry_and_feedback_presence_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the response contain an inquiry and imply that feedback will be provided?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+",False,False
+"async def inquiry_and_feedback_presence_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the response contain an inquiry and imply that feedback will be provided?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+",False,False
+"async def inquiry_and_feedback_presence_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the response contain an inquiry and imply that feedback will be provided?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def workflow_description_assert1(example: dict, prompt: str, response: str):
+    return ""summary of your understanding"" in response and ""feedback"" in response
+",False,False
+"async def inquiry_and_feedback_presence_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the response contain an inquiry and imply that feedback will be provided?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+",False,False
+"async def inquiry_and_feedback_presence_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the response contain an inquiry and imply that feedback will be provided?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def inquiry_and_feedback_presence_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the response contain an inquiry and imply that feedback will be provided?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def workflow_description_assert2(example: dict, prompt: str, response: str):
+    should_contain = [
+        ""please provide me with a summary of your current understanding"",
+        ""Feedback:"",
+        ""Now, let's explore"",
+        ""Your task is to"",
+    ]
+    return all(step in response for step in should_contain)
+",False,False
+"async def inquiry_and_feedback_presence_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the response contain an inquiry and imply that feedback will be provided?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+",False,False
+"async def inquiry_and_feedback_presence_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the response contain an inquiry and imply that feedback will be provided?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def feedback_inclusion_assert(example: dict, prompt: str, response: str):
+    return ""Feedback:"" in response
+",False,False
+"async def inquiry_and_feedback_presence_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the response contain an inquiry and imply that feedback will be provided?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def word_count_assert(example: dict, prompt: str, response: str):
+    return 150 <= len(response.split()) <= 250
+",False,False
+"async def inquiry_and_feedback_presence_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the response contain an inquiry and imply that feedback will be provided?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+",False,False
+"async def inquiry_and_feedback_presence_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the response contain an inquiry and imply that feedback will be provided?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def willing_to_accept_new_summary_assert(
+    example: dict, prompt: str, response: str
+):
+    expected_phrases = [
+        ""At any point during our discussion"",
+        ""please provide me with an updated summary"",
+        ""we can continue to delve deeper"",
+    ]
+    return any(phrase in response for phrase in expected_phrases)
+",False,False
+"async def inquiry_and_feedback_presence_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the response contain an inquiry and imply that feedback will be provided?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def workflow_completed_correctly_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the LLM's response correctly complete the workflow described in the prompt, ""
+        ""including providing feedback on the user's understanding and being willing to accept a new summary?""
+    )
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+","async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+",False,False
+"async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+","async def workflow_description_assert1(example: dict, prompt: str, response: str):
+    return ""summary of your understanding"" in response and ""feedback"" in response
+",False,False
+"async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+","async def inquiry_and_feedback_presence_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the response contain an inquiry and imply that feedback will be provided?""
+    )
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+","async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+","async def workflow_description_assert2(example: dict, prompt: str, response: str):
+    should_contain = [
+        ""please provide me with a summary of your current understanding"",
+        ""Feedback:"",
+        ""Now, let's explore"",
+        ""Your task is to"",
+    ]
+    return all(step in response for step in should_contain)
+",False,False
+"async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+","async def feedback_inclusion_assert(example: dict, prompt: str, response: str):
+    return ""Feedback:"" in response
+",False,False
+"async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+","async def word_count_assert(example: dict, prompt: str, response: str):
+    return 150 <= len(response.split()) <= 250
+",False,False
+"async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+","async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+",False,False
+"async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+","async def willing_to_accept_new_summary_assert(
+    example: dict, prompt: str, response: str
+):
+    expected_phrases = [
+        ""At any point during our discussion"",
+        ""please provide me with an updated summary"",
+        ""we can continue to delve deeper"",
+    ]
+    return any(phrase in response for phrase in expected_phrases)
+",False,False
+"async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+","async def workflow_completed_correctly_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the LLM's response correctly complete the workflow described in the prompt, ""
+        ""including providing feedback on the user's understanding and being willing to accept a new summary?""
+    )
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def subject_exclusivity_assert(example: dict, prompt: str, response: str):
+    other_subjects = [
+        ""biology"",
+        ""chemistry"",
+        ""physics"",
+        ""mathematics"",
+        ""history"",
+        ""geography"",
+    ]
+    return not any(subject in response for subject in other_subjects)
+","async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+",False,False
+"async def subject_exclusivity_assert(example: dict, prompt: str, response: str):
+    other_subjects = [
+        ""biology"",
+        ""chemistry"",
+        ""physics"",
+        ""mathematics"",
+        ""history"",
+        ""geography"",
+    ]
+    return not any(subject in response for subject in other_subjects)
+","async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+",False,False
+"async def subject_exclusivity_assert(example: dict, prompt: str, response: str):
+    other_subjects = [
+        ""biology"",
+        ""chemistry"",
+        ""physics"",
+        ""mathematics"",
+        ""history"",
+        ""geography"",
+    ]
+    return not any(subject in response for subject in other_subjects)
+","async def workflow_description_assert1(example: dict, prompt: str, response: str):
+    return ""summary of your understanding"" in response and ""feedback"" in response
+",False,False
+"async def subject_exclusivity_assert(example: dict, prompt: str, response: str):
+    other_subjects = [
+        ""biology"",
+        ""chemistry"",
+        ""physics"",
+        ""mathematics"",
+        ""history"",
+        ""geography"",
+    ]
+    return not any(subject in response for subject in other_subjects)
+","async def inquiry_and_feedback_presence_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the response contain an inquiry and imply that feedback will be provided?""
+    )
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def subject_exclusivity_assert(example: dict, prompt: str, response: str):
+    other_subjects = [
+        ""biology"",
+        ""chemistry"",
+        ""physics"",
+        ""mathematics"",
+        ""history"",
+        ""geography"",
+    ]
+    return not any(subject in response for subject in other_subjects)
+","async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+",False,False
+"async def subject_exclusivity_assert(example: dict, prompt: str, response: str):
+    other_subjects = [
+        ""biology"",
+        ""chemistry"",
+        ""physics"",
+        ""mathematics"",
+        ""history"",
+        ""geography"",
+    ]
+    return not any(subject in response for subject in other_subjects)
+","async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def subject_exclusivity_assert(example: dict, prompt: str, response: str):
+    other_subjects = [
+        ""biology"",
+        ""chemistry"",
+        ""physics"",
+        ""mathematics"",
+        ""history"",
+        ""geography"",
+    ]
+    return not any(subject in response for subject in other_subjects)
+","async def workflow_description_assert2(example: dict, prompt: str, response: str):
+    should_contain = [
+        ""please provide me with a summary of your current understanding"",
+        ""Feedback:"",
+        ""Now, let's explore"",
+        ""Your task is to"",
+    ]
+    return all(step in response for step in should_contain)
+",False,False
+"async def subject_exclusivity_assert(example: dict, prompt: str, response: str):
+    other_subjects = [
+        ""biology"",
+        ""chemistry"",
+        ""physics"",
+        ""mathematics"",
+        ""history"",
+        ""geography"",
+    ]
+    return not any(subject in response for subject in other_subjects)
+","async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+",False,False
+"async def subject_exclusivity_assert(example: dict, prompt: str, response: str):
+    other_subjects = [
+        ""biology"",
+        ""chemistry"",
+        ""physics"",
+        ""mathematics"",
+        ""history"",
+        ""geography"",
+    ]
+    return not any(subject in response for subject in other_subjects)
+","async def feedback_inclusion_assert(example: dict, prompt: str, response: str):
+    return ""Feedback:"" in response
+",False,False
+"async def subject_exclusivity_assert(example: dict, prompt: str, response: str):
+    other_subjects = [
+        ""biology"",
+        ""chemistry"",
+        ""physics"",
+        ""mathematics"",
+        ""history"",
+        ""geography"",
+    ]
+    return not any(subject in response for subject in other_subjects)
+","async def word_count_assert(example: dict, prompt: str, response: str):
+    return 150 <= len(response.split()) <= 250
+",False,False
+"async def subject_exclusivity_assert(example: dict, prompt: str, response: str):
+    other_subjects = [
+        ""biology"",
+        ""chemistry"",
+        ""physics"",
+        ""mathematics"",
+        ""history"",
+        ""geography"",
+    ]
+    return not any(subject in response for subject in other_subjects)
+","async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+",False,False
+"async def subject_exclusivity_assert(example: dict, prompt: str, response: str):
+    other_subjects = [
+        ""biology"",
+        ""chemistry"",
+        ""physics"",
+        ""mathematics"",
+        ""history"",
+        ""geography"",
+    ]
+    return not any(subject in response for subject in other_subjects)
+","async def willing_to_accept_new_summary_assert(
+    example: dict, prompt: str, response: str
+):
+    expected_phrases = [
+        ""At any point during our discussion"",
+        ""please provide me with an updated summary"",
+        ""we can continue to delve deeper"",
+    ]
+    return any(phrase in response for phrase in expected_phrases)
+",False,False
+"async def subject_exclusivity_assert(example: dict, prompt: str, response: str):
+    other_subjects = [
+        ""biology"",
+        ""chemistry"",
+        ""physics"",
+        ""mathematics"",
+        ""history"",
+        ""geography"",
+    ]
+    return not any(subject in response for subject in other_subjects)
+","async def workflow_completed_correctly_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the LLM's response correctly complete the workflow described in the prompt, ""
+        ""including providing feedback on the user's understanding and being willing to accept a new summary?""
+    )
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def language_professionalism_assert(example: dict, prompt: str, response: str):
+    question = ""Is the language used in the response professional and gentle, as a teacher's should be?""
+    return await ask_llm(prompt, response, question)
+","async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+",False,False
+"async def language_professionalism_assert(example: dict, prompt: str, response: str):
+    question = ""Is the language used in the response professional and gentle, as a teacher's should be?""
+    return await ask_llm(prompt, response, question)
+","async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+",False,False
+"async def language_professionalism_assert(example: dict, prompt: str, response: str):
+    question = ""Is the language used in the response professional and gentle, as a teacher's should be?""
+    return await ask_llm(prompt, response, question)
+","async def workflow_description_assert1(example: dict, prompt: str, response: str):
+    return ""summary of your understanding"" in response and ""feedback"" in response
+",False,False
+"async def language_professionalism_assert(example: dict, prompt: str, response: str):
+    question = ""Is the language used in the response professional and gentle, as a teacher's should be?""
+    return await ask_llm(prompt, response, question)
+","async def inquiry_and_feedback_presence_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the response contain an inquiry and imply that feedback will be provided?""
+    )
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def language_professionalism_assert(example: dict, prompt: str, response: str):
+    question = ""Is the language used in the response professional and gentle, as a teacher's should be?""
+    return await ask_llm(prompt, response, question)
+","async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+",False,False
+"async def language_professionalism_assert(example: dict, prompt: str, response: str):
+    question = ""Is the language used in the response professional and gentle, as a teacher's should be?""
+    return await ask_llm(prompt, response, question)
+","async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def language_professionalism_assert(example: dict, prompt: str, response: str):
+    question = ""Is the language used in the response professional and gentle, as a teacher's should be?""
+    return await ask_llm(prompt, response, question)
+","async def workflow_description_assert2(example: dict, prompt: str, response: str):
+    should_contain = [
+        ""please provide me with a summary of your current understanding"",
+        ""Feedback:"",
+        ""Now, let's explore"",
+        ""Your task is to"",
+    ]
+    return all(step in response for step in should_contain)
+",False,False
+"async def language_professionalism_assert(example: dict, prompt: str, response: str):
+    question = ""Is the language used in the response professional and gentle, as a teacher's should be?""
+    return await ask_llm(prompt, response, question)
+","async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+",False,False
+"async def language_professionalism_assert(example: dict, prompt: str, response: str):
+    question = ""Is the language used in the response professional and gentle, as a teacher's should be?""
+    return await ask_llm(prompt, response, question)
+","async def feedback_inclusion_assert(example: dict, prompt: str, response: str):
+    return ""Feedback:"" in response
+",False,False
+"async def language_professionalism_assert(example: dict, prompt: str, response: str):
+    question = ""Is the language used in the response professional and gentle, as a teacher's should be?""
+    return await ask_llm(prompt, response, question)
+","async def word_count_assert(example: dict, prompt: str, response: str):
+    return 150 <= len(response.split()) <= 250
+",False,False
+"async def language_professionalism_assert(example: dict, prompt: str, response: str):
+    question = ""Is the language used in the response professional and gentle, as a teacher's should be?""
+    return await ask_llm(prompt, response, question)
+","async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+",False,False
+"async def language_professionalism_assert(example: dict, prompt: str, response: str):
+    question = ""Is the language used in the response professional and gentle, as a teacher's should be?""
+    return await ask_llm(prompt, response, question)
+","async def willing_to_accept_new_summary_assert(
+    example: dict, prompt: str, response: str
+):
+    expected_phrases = [
+        ""At any point during our discussion"",
+        ""please provide me with an updated summary"",
+        ""we can continue to delve deeper"",
+    ]
+    return any(phrase in response for phrase in expected_phrases)
+",False,False
+"async def language_professionalism_assert(example: dict, prompt: str, response: str):
+    question = ""Is the language used in the response professional and gentle, as a teacher's should be?""
+    return await ask_llm(prompt, response, question)
+","async def workflow_completed_correctly_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the LLM's response correctly complete the workflow described in the prompt, ""
+        ""including providing feedback on the user's understanding and being willing to accept a new summary?""
+    )
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+","async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+",False,False
+"async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+","async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+",False,False
+"async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+","async def workflow_description_assert1(example: dict, prompt: str, response: str):
+    return ""summary of your understanding"" in response and ""feedback"" in response
+",False,False
+"async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+","async def inquiry_and_feedback_presence_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the response contain an inquiry and imply that feedback will be provided?""
+    )
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+","async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+",False,False
+"async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+","async def workflow_description_assert2(example: dict, prompt: str, response: str):
+    should_contain = [
+        ""please provide me with a summary of your current understanding"",
+        ""Feedback:"",
+        ""Now, let's explore"",
+        ""Your task is to"",
+    ]
+    return all(step in response for step in should_contain)
+",False,False
+"async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+","async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+",False,False
+"async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+","async def feedback_inclusion_assert(example: dict, prompt: str, response: str):
+    return ""Feedback:"" in response
+",False,False
+"async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+","async def word_count_assert(example: dict, prompt: str, response: str):
+    return 150 <= len(response.split()) <= 250
+",False,False
+"async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+","async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+",False,False
+"async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+","async def willing_to_accept_new_summary_assert(
+    example: dict, prompt: str, response: str
+):
+    expected_phrases = [
+        ""At any point during our discussion"",
+        ""please provide me with an updated summary"",
+        ""we can continue to delve deeper"",
+    ]
+    return any(phrase in response for phrase in expected_phrases)
+",False,False
+"async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+","async def workflow_completed_correctly_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the LLM's response correctly complete the workflow described in the prompt, ""
+        ""including providing feedback on the user's understanding and being willing to accept a new summary?""
+    )
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+","async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+",False,False
+"async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+","async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+",False,False
+"async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+","async def workflow_description_assert1(example: dict, prompt: str, response: str):
+    return ""summary of your understanding"" in response and ""feedback"" in response
+",False,False
+"async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+","async def inquiry_and_feedback_presence_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the response contain an inquiry and imply that feedback will be provided?""
+    )
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+","async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+","async def workflow_description_assert2(example: dict, prompt: str, response: str):
+    should_contain = [
+        ""please provide me with a summary of your current understanding"",
+        ""Feedback:"",
+        ""Now, let's explore"",
+        ""Your task is to"",
+    ]
+    return all(step in response for step in should_contain)
+",False,False
+"async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+","async def feedback_inclusion_assert(example: dict, prompt: str, response: str):
+    return ""Feedback:"" in response
+",False,False
+"async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+","async def word_count_assert(example: dict, prompt: str, response: str):
+    return 150 <= len(response.split()) <= 250
+",False,False
+"async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+","async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+",False,False
+"async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+","async def willing_to_accept_new_summary_assert(
+    example: dict, prompt: str, response: str
+):
+    expected_phrases = [
+        ""At any point during our discussion"",
+        ""please provide me with an updated summary"",
+        ""we can continue to delve deeper"",
+    ]
+    return any(phrase in response for phrase in expected_phrases)
+",False,False
+"async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+","async def workflow_completed_correctly_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the LLM's response correctly complete the workflow described in the prompt, ""
+        ""including providing feedback on the user's understanding and being willing to accept a new summary?""
+    )
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def feedback_inclusion_assert(example: dict, prompt: str, response: str):
+    return ""Feedback:"" in response
+","async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+",False,False
+"async def feedback_inclusion_assert(example: dict, prompt: str, response: str):
+    return ""Feedback:"" in response
+","async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+",False,False
+"async def feedback_inclusion_assert(example: dict, prompt: str, response: str):
+    return ""Feedback:"" in response
+","async def workflow_description_assert2(example: dict, prompt: str, response: str):
+    should_contain = [
+        ""please provide me with a summary of your current understanding"",
+        ""Feedback:"",
+        ""Now, let's explore"",
+        ""Your task is to"",
+    ]
+    return all(step in response for step in should_contain)
+",False,False
+"async def feedback_inclusion_assert(example: dict, prompt: str, response: str):
+    return ""Feedback:"" in response
+","async def word_count_assert(example: dict, prompt: str, response: str):
+    return 150 <= len(response.split()) <= 250
+",False,False
+"async def feedback_inclusion_assert(example: dict, prompt: str, response: str):
+    return ""Feedback:"" in response
+","async def willing_to_accept_new_summary_assert(
+    example: dict, prompt: str, response: str
+):
+    expected_phrases = [
+        ""At any point during our discussion"",
+        ""please provide me with an updated summary"",
+        ""we can continue to delve deeper"",
+    ]
+    return any(phrase in response for phrase in expected_phrases)
+",False,False
+"async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+","async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+",False,False
+"async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+","async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+",False,False
+"async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+","async def workflow_description_assert1(example: dict, prompt: str, response: str):
+    return ""summary of your understanding"" in response and ""feedback"" in response
+",False,False
+"async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+","async def inquiry_and_feedback_presence_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the response contain an inquiry and imply that feedback will be provided?""
+    )
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+","async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+",False,False
+"async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+","async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+","async def workflow_description_assert2(example: dict, prompt: str, response: str):
+    should_contain = [
+        ""please provide me with a summary of your current understanding"",
+        ""Feedback:"",
+        ""Now, let's explore"",
+        ""Your task is to"",
+    ]
+    return all(step in response for step in should_contain)
+",False,False
+"async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+","async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+",False,False
+"async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+","async def feedback_inclusion_assert(example: dict, prompt: str, response: str):
+    return ""Feedback:"" in response
+",False,False
+"async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+","async def word_count_assert(example: dict, prompt: str, response: str):
+    return 150 <= len(response.split()) <= 250
+",False,False
+"async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+","async def willing_to_accept_new_summary_assert(
+    example: dict, prompt: str, response: str
+):
+    expected_phrases = [
+        ""At any point during our discussion"",
+        ""please provide me with an updated summary"",
+        ""we can continue to delve deeper"",
+    ]
+    return any(phrase in response for phrase in expected_phrases)
+",False,False
+"async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+","async def workflow_completed_correctly_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the LLM's response correctly complete the workflow described in the prompt, ""
+        ""including providing feedback on the user's understanding and being willing to accept a new summary?""
+    )
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def workflow_completed_correctly_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the LLM's response correctly complete the workflow described in the prompt, ""
+        ""including providing feedback on the user's understanding and being willing to accept a new summary?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def presentation_format_assert(example: dict, prompt: str, response: str):
+    return (
+        response.startswith(""Great!"") and ""please provide me with a summary"" in response
+    )
+",False,False
+"async def workflow_completed_correctly_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the LLM's response correctly complete the workflow described in the prompt, ""
+        ""including providing feedback on the user's understanding and being willing to accept a new summary?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def question_based_on_topic_assert(example: dict, prompt: str, response: str):
+    return example[""question""] in response and ""?"" in response
+",False,False
+"async def workflow_completed_correctly_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the LLM's response correctly complete the workflow described in the prompt, ""
+        ""including providing feedback on the user's understanding and being willing to accept a new summary?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def workflow_description_assert1(example: dict, prompt: str, response: str):
+    return ""summary of your understanding"" in response and ""feedback"" in response
+",False,False
+"async def workflow_completed_correctly_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the LLM's response correctly complete the workflow described in the prompt, ""
+        ""including providing feedback on the user's understanding and being willing to accept a new summary?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def inquiry_and_feedback_presence_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the response contain an inquiry and imply that feedback will be provided?""
+    )
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def workflow_completed_correctly_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the LLM's response correctly complete the workflow described in the prompt, ""
+        ""including providing feedback on the user's understanding and being willing to accept a new summary?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def keyword_inclusion_assert(example: dict, prompt: str, response: str):
+    topic = example.get(""question"")
+    return topic in response
+",False,False
+"async def workflow_completed_correctly_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the LLM's response correctly complete the workflow described in the prompt, ""
+        ""including providing feedback on the user's understanding and being willing to accept a new summary?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def correctness_completeness_consistency_assert(
+    example: dict, prompt: str, response: str
+):
+    question = ""Is the response correctly following the instructions and does it seem complete and consistent?""
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def workflow_completed_correctly_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the LLM's response correctly complete the workflow described in the prompt, ""
+        ""including providing feedback on the user's understanding and being willing to accept a new summary?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def workflow_description_assert2(example: dict, prompt: str, response: str):
+    should_contain = [
+        ""please provide me with a summary of your current understanding"",
+        ""Feedback:"",
+        ""Now, let's explore"",
+        ""Your task is to"",
+    ]
+    return all(step in response for step in should_contain)
+",False,False
+"async def workflow_completed_correctly_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the LLM's response correctly complete the workflow described in the prompt, ""
+        ""including providing feedback on the user's understanding and being willing to accept a new summary?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def example_filled_with_question_assert(
+    example: dict, prompt: str, response: str
+):
+    topic = prompt.splitlines()[-1]
+    return topic in response
+",False,False
+"async def workflow_completed_correctly_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the LLM's response correctly complete the workflow described in the prompt, ""
+        ""including providing feedback on the user's understanding and being willing to accept a new summary?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def feedback_inclusion_assert(example: dict, prompt: str, response: str):
+    return ""Feedback:"" in response
+",False,False
+"async def workflow_completed_correctly_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the LLM's response correctly complete the workflow described in the prompt, ""
+        ""including providing feedback on the user's understanding and being willing to accept a new summary?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def word_count_assert(example: dict, prompt: str, response: str):
+    return 150 <= len(response.split()) <= 250
+",False,False
+"async def workflow_completed_correctly_assert(
+    example: dict, prompt: str, response: str
+):
+    question = (
+        ""Does the LLM's response correctly complete the workflow described in the prompt, ""
+        ""including providing feedback on the user's understanding and being willing to accept a new summary?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def toy_dataset_and_problem_inclusion_assert(
+    example: dict, prompt: str, response: str
+):
+    dataset_keywords = [
+        ""dataset"",
+        ""survey"",
+        ""employees"",
+        ""company"",
+        ""calculate"",
+        ""compute"",
+        ""assess"",
+    ]
+    return any(keyword in response for keyword in dataset_keywords)
+",False,False
