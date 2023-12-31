@@ -14,6 +14,21 @@ func A,func B,A -> B,asked_LLM
     """"""
     return response.lower().startswith(""outline:"")
 ",True,True
+"async def assert_contains_outline(example: dict, prompt: str, response: str) -> bool:
+    """"""
+    Check that the response begins with an outline planning the summary's execution.
+    """"""
+    return response.lower().startswith(""outline:"")
+","async def assert_response_begins_with_outline(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response begins with an outline planning the execution of the summary.
+    """"""
+    return response.strip().startswith(""Title:"") or response.strip().startswith(
+        ""Outline:""
+    )
+",True,True
 "async def assert_response_includes_context(example: dict, prompt: str, response: str):
     """"""
     Check if the response includes context at the beginning with the title, speaker/author,
@@ -25,6 +40,134 @@ func A,func B,A -> B,asked_LLM
     Check if the LLM response begins with a 'Context' section, including title, speaker/author, and subject/theme.
     """"""
     return response.startswith(""**Context:**"")
+",True,True
+"async def assert_contains_context_section(example: dict, prompt: str, response: str):
+    """"""
+    Check if the LLM response begins with a 'Context' section, including title, speaker/author, and subject/theme.
+    """"""
+    return response.startswith(""**Context:**"")
+","async def assert_response_includes_context(example: dict, prompt: str, response: str):
+    """"""
+    Check if the response includes context at the beginning with the title, speaker/author,
+    and overarching theme.
+    """"""
+    return ""Title:"" in response and ""Speaker:"" in response and ""Subject:"" in response
+",True,True
+"async def assert_response_lists_key_points_with_bullets(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response lists 3-5 key points using bullet points.
+    """"""
+    key_points_start = response.find(""Key Points:"")
+    key_points_end = response.find(""Central Thesis:"", key_points_start)
+    key_points_text = response[key_points_start:key_points_end].strip()
+
+    if key_points_start == -1 or key_points_end == -1:
+        return False
+
+    bullet_points = key_points_text.count(
+        ""-""
+    )  # Assume bullet points are marked with hyphens
+    return 3 <= bullet_points <= 5
+","async def assert_has_key_points(example: dict, prompt: str, response: str) -> bool:
+    """"""
+    Check that the response lists at least 3-5 key points using bullet points.
+    """"""
+    key_points_index = response.lower().find(""key points:"")
+    list_start_index = response[key_points_index:].find(""-"")
+    bullets = response[key_points_index + list_start_index :].count(""-"")
+    return bullets >= 3 and bullets <= 5
+",True,True
+"async def assert_has_key_points(example: dict, prompt: str, response: str) -> bool:
+    """"""
+    Check that the response lists at least 3-5 key points using bullet points.
+    """"""
+    key_points_index = response.lower().find(""key points:"")
+    list_start_index = response[key_points_index:].find(""-"")
+    bullets = response[key_points_index + list_start_index :].count(""-"")
+    return bullets >= 3 and bullets <= 5
+","async def assert_response_lists_key_points_with_bullets(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response lists 3-5 key points using bullet points.
+    """"""
+    key_points_start = response.find(""Key Points:"")
+    key_points_end = response.find(""Central Thesis:"", key_points_start)
+    key_points_text = response[key_points_start:key_points_end].strip()
+
+    if key_points_start == -1 or key_points_end == -1:
+        return False
+
+    bullet_points = key_points_text.count(
+        ""-""
+    )  # Assume bullet points are marked with hyphens
+    return 3 <= bullet_points <= 5
+",True,True
+"async def assert_response_lists_key_points_with_bullets(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response lists 3-5 key points using bullet points.
+    """"""
+    key_points_start = response.find(""Key Points:"")
+    key_points_end = response.find(""Central Thesis:"", key_points_start)
+    key_points_text = response[key_points_start:key_points_end].strip()
+
+    if key_points_start == -1 or key_points_end == -1:
+        return False
+
+    bullet_points = key_points_text.count(
+        ""-""
+    )  # Assume bullet points are marked with hyphens
+    return 3 <= bullet_points <= 5
+","async def assert_minimum_key_points_listed(example: dict, prompt: str, response: str):
+    """"""
+    Check that the response lists at least 3 key points.
+    """"""
+    return (
+        len(
+            [
+                point
+                for point in response.split(""-"")
+                if ""Key Points:"" in point or ""point:"" in point
+            ]
+        )
+        >= 3
+    )
+",True,True
+"async def assert_minimum_key_points_listed(example: dict, prompt: str, response: str):
+    """"""
+    Check that the response lists at least 3 key points.
+    """"""
+    return (
+        len(
+            [
+                point
+                for point in response.split(""-"")
+                if ""Key Points:"" in point or ""point:"" in point
+            ]
+        )
+        >= 3
+    )
+","async def assert_response_lists_key_points_with_bullets(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response lists 3-5 key points using bullet points.
+    """"""
+    key_points_start = response.find(""Key Points:"")
+    key_points_end = response.find(""Central Thesis:"", key_points_start)
+    key_points_text = response[key_points_start:key_points_end].strip()
+
+    if key_points_start == -1 or key_points_end == -1:
+        return False
+
+    bullet_points = key_points_text.count(
+        ""-""
+    )  # Assume bullet points are marked with hyphens
+    return 3 <= bullet_points <= 5
 ",True,True
 "async def assert_response_includes_significant_details(
     example: dict, prompt: str, response: str
@@ -41,6 +184,49 @@ func A,func B,A -> B,asked_LLM
     """"""
     return ""significant details:"" in response.lower()
 ",True,True
+"async def assert_contains_significant_details(
+    example: dict, prompt: str, response: str
+) -> bool:
+    """"""
+    Check that the response contains significant details using data, anecdotes, or examples.
+    """"""
+    return ""significant details:"" in response.lower()
+","async def assert_response_includes_significant_details(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response includes significant details that support the key points.
+    """"""
+    return ""Significant Details:"" in response
+",True,True
+"async def assert_response_includes_significant_details(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response includes significant details that support the key points.
+    """"""
+    return ""Significant Details:"" in response
+","async def assert_significant_details_present(example: dict, prompt: str, response: str):
+    """"""
+    Check if the response includes significant details related to the key points.
+    """"""
+    significant_details_heading = ""Significant Details:""
+    return significant_details_heading in response
+",True,True
+"async def assert_significant_details_present(example: dict, prompt: str, response: str):
+    """"""
+    Check if the response includes significant details related to the key points.
+    """"""
+    significant_details_heading = ""Significant Details:""
+    return significant_details_heading in response
+","async def assert_response_includes_significant_details(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response includes significant details that support the key points.
+    """"""
+    return ""Significant Details:"" in response
+",True,True
 "async def assert_response_summarizes_implications(
     example: dict, prompt: str, response: str
 ):
@@ -56,6 +242,49 @@ func A,func B,A -> B,asked_LLM
     """"""
     return ""conclusions and takeaways:"" in response.lower()
 ",True,True
+"async def assert_contains_conclusions_takeaways(
+    example: dict, prompt: str, response: str
+) -> bool:
+    """"""
+    Check that the response includes a section on conclusions and takeaways.
+    """"""
+    return ""conclusions and takeaways:"" in response.lower()
+","async def assert_response_summarizes_implications(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response summarizes the overall implications and actionable insights.
+    """"""
+    return ""Conclusions and Takeaways:"" in response
+",True,True
+"async def assert_response_summarizes_implications(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response summarizes the overall implications and actionable insights.
+    """"""
+    return ""Conclusions and Takeaways:"" in response
+","async def assert_conclusions_and_takeaways(example: dict, prompt: str, response: str):
+    """"""
+    Check if the conclusion and takeaways of the talk are summarized in the response.
+    """"""
+    conclusions_heading = ""Conclusions and Takeaways:""
+    return conclusions_heading in response
+",True,True
+"async def assert_conclusions_and_takeaways(example: dict, prompt: str, response: str):
+    """"""
+    Check if the conclusion and takeaways of the talk are summarized in the response.
+    """"""
+    conclusions_heading = ""Conclusions and Takeaways:""
+    return conclusions_heading in response
+","async def assert_response_summarizes_implications(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response summarizes the overall implications and actionable insights.
+    """"""
+    return ""Conclusions and Takeaways:"" in response
+",True,True
 "async def assert_response_word_count_within_limits(
     example: dict, prompt: str, response: str
 ):
@@ -69,6 +298,23 @@ func A,func B,A -> B,asked_LLM
 ) -> bool:
     """"""
     Check that the response is a summary within the 200-400 word count range.
+    """"""
+    word_count = len(response.split())
+    return 200 <= word_count <= 400
+",True,True
+"async def assert_summary_within_word_count(
+    example: dict, prompt: str, response: str
+) -> bool:
+    """"""
+    Check that the response is a summary within the 200-400 word count range.
+    """"""
+    word_count = len(response.split())
+    return 200 <= word_count <= 400
+","async def assert_response_word_count_within_limits(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response is within the 200-400 word count range.
     """"""
     word_count = len(response.split())
     return 200 <= word_count <= 400
@@ -102,484 +348,72 @@ func A,func B,A -> B,asked_LLM
     question = ""Does the response accomplish all parts of the task successfully according to the instructed structure, while providing a useful, clear, and succinct summary that captures the essence of the discussion?""
     return await ask_llm(prompt, response, question)
 ",True,True
-"async def assert_context_includes_title_author_subject(
+"async def assert_response_proper_summary_structure(
+    example: dict, prompt: str, response: str
+) -> bool:
+    """"""
+    Check that the response accomplishes the parts of the task successfully according to the instructed structure.
+    """"""
+    question = ""Does the response accomplish all parts of the task successfully according to the instructed structure, while providing a useful, clear, and succinct summary that captures the essence of the discussion?""
+    return await ask_llm(prompt, response, question)
+","async def assert_response_structure_for_usefulness_and_clarity(
     example: dict, prompt: str, response: str
 ):
     """"""
-    Check that the response includes context information: title, speaker/author, and subject/theme.
+    Check if the response ensures that the requested structure is followed for usefulness and clarity.
     """"""
-    return (
-        (""Title:"" in response)
-        and (""Author:"" in response)
-        and (""Theme:"" in response or ""Subject:"" in response)
-    )
+    required_sections = [
+        ""Title:"",
+        ""Speaker:"",
+        ""Subject:"",
+        ""Key Points:"",
+        ""Central Thesis:"",
+        ""Significant Details:"",
+        ""Conclusions and Takeaways:"",
+        ""Personal Insights or Criticisms:"",
+    ]
+    for section in required_sections:
+        if section not in response:
+            return False
+    return True
+",True,True
+"async def assert_contains_context_section(example: dict, prompt: str, response: str):
+    """"""
+    Check if the LLM response begins with a 'Context' section, including title, speaker/author, and subject/theme.
+    """"""
+    return response.startswith(""**Context:**"")
+","async def assert_has_context(example: dict, prompt: str, response: str) -> bool:
+    """"""
+    Check that the LLM response begins with context including the title, speaker or author,
+    and overarching subject or theme of the discussion or lecture.
+    """"""
+    return response.lower().startswith(""context:"")
+",True,True
+"async def assert_has_context(example: dict, prompt: str, response: str) -> bool:
+    """"""
+    Check that the LLM response begins with context including the title, speaker or author,
+    and overarching subject or theme of the discussion or lecture.
+    """"""
+    return response.lower().startswith(""context:"")
 ","async def assert_contains_context_section(example: dict, prompt: str, response: str):
     """"""
     Check if the LLM response begins with a 'Context' section, including title, speaker/author, and subject/theme.
     """"""
     return response.startswith(""**Context:**"")
 ",True,True
-"async def assert_inclusion_of_date_and_setting_if_applicable(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check if the response includes date and setting when applicable. Since applicability is subjective,
-    leverage LLM if the title implies a specific event or setting.
-    """"""
-    if ""lecture"" in response or ""discussion"" in response:
-        question = ""Does the summary unnecessarily omit any applicable date or setting details?""
-        return not await ask_llm(prompt, response, question)
-    return True  # Assume correct if no evident relation to specific events or settings.
-","async def assert_response_includes_relevant_dates_and_settings(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check if the response includes relevant dates and settings if applicable.
-    """"""
-    # This is a bit trickier since the presence of dates and settings can highly vary.
-    # Let's ask the LLM to validate whether the response correctly includes or excludes
-    # dates and settings based on context from the example.
-    question = ""Does the response include the relevant dates and settings, if they were applicable?""
-    return await ask_llm(prompt, response, question)
-",True,True
-"async def assert_minimum_key_points_listed(example: dict, prompt: str, response: str):
-    """"""
-    Check that the response lists at least 3 key points.
-    """"""
-    return (
-        len(
-            [
-                point
-                for point in response.split(""-"")
-                if ""Key Points:"" in point or ""point:"" in point
-            ]
-        )
-        >= 3
-    )
-","async def assert_key_points_are_bullet_points(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check if key points are formatted as bullet points for easy readability.
-    """"""
-    key_points_heading = ""Key Points:""
-    key_points_index = response.find(key_points_heading)
-    return (
-        response[key_points_index:].count(""\n- "") >= 3
-    )  # Looking for newline followed by ""- ""
-",True,True
-"async def assert_minimum_key_points_listed(example: dict, prompt: str, response: str):
-    """"""
-    Check that the response lists at least 3 key points.
-    """"""
-    return (
-        len(
-            [
-                point
-                for point in response.split(""-"")
-                if ""Key Points:"" in point or ""point:"" in point
-            ]
-        )
-        >= 3
-    )
-","async def assert_has_key_points(example: dict, prompt: str, response: str) -> bool:
-    """"""
-    Check that the response lists at least 3-5 key points using bullet points.
-    """"""
-    key_points_index = response.lower().find(""key points:"")
-    list_start_index = response[key_points_index:].find(""-"")
-    bullets = response[key_points_index + list_start_index :].count(""-"")
-    return bullets >= 3 and bullets <= 5
-",True,True
-"async def assert_brief_and_succinct_preservation_of_essence(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check that the response is brief and succinct while preserving the essence of the discussion.
-    """"""
-    question = ""Is the summary brief and succinct while preserving the essence of the discussion?""
-    return await ask_llm(prompt, response, question)
-","async def assert_response_maintains_essence_and_brevity(
+"async def assert_contains_significant_details(
     example: dict, prompt: str, response: str
 ) -> bool:
     """"""
-    Check that the response maintains the essence of the discussion and creates a succinct summary.
+    Check that the response contains significant details using data, anecdotes, or examples.
     """"""
-    question = ""Does the response maintain the essence of the discussion and create a succinct summary?""
-    return await ask_llm(prompt, response, question)
-",True,True
-"async def assert_brief_and_succinct_preservation_of_essence(
-    example: dict, prompt: str, response: str
-):
+    return ""significant details:"" in response.lower()
+","async def assert_significant_details_present(example: dict, prompt: str, response: str):
     """"""
-    Check that the response is brief and succinct while preserving the essence of the discussion.
+    Check if the response includes significant details related to the key points.
     """"""
-    question = ""Is the summary brief and succinct while preserving the essence of the discussion?""
-    return await ask_llm(prompt, response, question)
-","async def assert_is_clear_succinct_and_essence_captured(
-    example: dict, prompt: str, response: str
-) -> bool:
-    """"""
-    Check that the summary is clear, succinct, and captures the essence of the discussion using `ask_llm`.
-    """"""
-    question = ""Is the summary clear, succinct, and does it capture the essence of the discussion?""
-    return await ask_llm(prompt, response, question)
-",True,True
-"async def assert_no_excessive_details(example: dict, prompt: str, response: str):
-    """"""
-    Assert that the summary does not dwell into excessive details and maintains a focus on key points.
-    """"""
-    question = (
-        ""Does the summary include excessive details beyond the necessary key points?""
-    )
-    return not await ask_llm(prompt, response, question)
-","async def assert_response_excludes_text_outside_content(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check if the response excludes any text outside the provided original content.
-    """"""
-    outside_text = example[""text""]
-    return outside_text not in response
-",True,True
-"async def assert_no_excessive_details(example: dict, prompt: str, response: str):
-    """"""
-    Assert that the summary does not dwell into excessive details and maintains a focus on key points.
-    """"""
-    question = (
-        ""Does the summary include excessive details beyond the necessary key points?""
-    )
-    return not await ask_llm(prompt, response, question)
-","async def assert_no_unnecessary_details(
-    example: dict, prompt: str, response: str
-) -> bool:
-    """"""
-    Check that the response does not include any unnecessary details that do not aid in understanding
-    the main points using `ask_llm`.
-    """"""
-    question = ""Does the summary include any unnecessary details that do not aid in understanding the main points?""
-    # We ask the LLM the opposite question; if it returns True, we include unnecessary details, so the result should be False.
-    return not await ask_llm(prompt, response, question)
-",True,True
-"async def assert_accuracy_in_summary_comprehension(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check that the response demonstrates comprehension skills by summarizing the text accurately.
-    """"""
-    question = ""Does this summary accurately represent the provided text, reflecting comprehension of the material?""
-    return await ask_llm(prompt, response, question)
-","async def assert_task_execution(example: dict, prompt: str, response: str):
-    """"""
-    Check if the response faithfully executes the given task to create a summary of the provided text.
-    """"""
-    question = ""Does the response accurately represent a summary of the text provided in the task?""
-    return await ask_llm(prompt, response, question)
-",True,True
-"async def assert_accuracy_in_summary_comprehension(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check that the response demonstrates comprehension skills by summarizing the text accurately.
-    """"""
-    question = ""Does this summary accurately represent the provided text, reflecting comprehension of the material?""
-    return await ask_llm(prompt, response, question)
-","async def assert_comprehension_of_main_ideas_and_details(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Use an LLM to determine if the response exhibits high comprehension skills by distinguishing between main ideas and supporting details.
-    """"""
-    question = ""Does the response exhibit high comprehension skills by distinguishing between main ideas and supporting details?""
-    return await ask_llm(prompt, response, question)
-",True,True
-"async def assert_correct_summary_structure(example: dict, prompt: str, response: str):
-    """"""
-    Check that the response follows the outlined structure: context first, followed by key points, etc.
-    """"""
-    structure_parts = [
-        ""Title:"",
-        ""Author:"",
-        ""Theme:"",
-        ""Key Points:"",
-        ""Central Thesis:"",
-        ""Significant Details:"",
-        ""Conclusions and Takeaways:"",
-    ]
-    structure_order = [
-        response.index(part) for part in structure_parts if part in response
-    ]
-
-    # A correctly structured response will have indices in increasing order
-    return all(
-        earlier < later for earlier, later in zip(structure_order, structure_order[1:])
-    )
-","async def assert_response_structure_for_usefulness_and_clarity(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check if the response ensures that the requested structure is followed for usefulness and clarity.
-    """"""
-    required_sections = [
-        ""Title:"",
-        ""Speaker:"",
-        ""Subject:"",
-        ""Key Points:"",
-        ""Central Thesis:"",
-        ""Significant Details:"",
-        ""Conclusions and Takeaways:"",
-        ""Personal Insights or Criticisms:"",
-    ]
-    for section in required_sections:
-        if section not in response:
-            return False
-    return True
-",True,True
-"async def assert_correct_summary_structure(example: dict, prompt: str, response: str):
-    """"""
-    Check that the response follows the outlined structure: context first, followed by key points, etc.
-    """"""
-    structure_parts = [
-        ""Title:"",
-        ""Author:"",
-        ""Theme:"",
-        ""Key Points:"",
-        ""Central Thesis:"",
-        ""Significant Details:"",
-        ""Conclusions and Takeaways:"",
-    ]
-    structure_order = [
-        response.index(part) for part in structure_parts if part in response
-    ]
-
-    # A correctly structured response will have indices in increasing order
-    return all(
-        earlier < later for earlier, later in zip(structure_order, structure_order[1:])
-    )
-","async def assert_response_proper_summary_structure(
-    example: dict, prompt: str, response: str
-) -> bool:
-    """"""
-    Check that the response accomplishes the parts of the task successfully according to the instructed structure.
-    """"""
-    question = ""Does the response accomplish all parts of the task successfully according to the instructed structure, while providing a useful, clear, and succinct summary that captures the essence of the discussion?""
-    return await ask_llm(prompt, response, question)
-",True,True
-"async def assert_correct_summary_structure(example: dict, prompt: str, response: str):
-    """"""
-    Check that the response follows the outlined structure: context first, followed by key points, etc.
-    """"""
-    structure_parts = [
-        ""Title:"",
-        ""Author:"",
-        ""Theme:"",
-        ""Key Points:"",
-        ""Central Thesis:"",
-        ""Significant Details:"",
-        ""Conclusions and Takeaways:"",
-    ]
-    structure_order = [
-        response.index(part) for part in structure_parts if part in response
-    ]
-
-    # A correctly structured response will have indices in increasing order
-    return all(
-        earlier < later for earlier, later in zip(structure_order, structure_order[1:])
-    )
-","async def assert_correct_summary_headers(example: dict, prompt: str, response: str):
-    """"""
-    Check that each section of the summary has clearly defined Markdown headers.
-    """"""
-    headers = [
-        ""**Title:**"",
-        ""**Author:**"",
-        ""**Subject:**"",
-        ""**Thesis:**"",
-        ""**Key Points:**"",
-        ""**Conclusions and Takeaways:**"",
-        ""**Glossary of Important Terms:**"",
-    ]
-    return all(header in response for header in headers)
-",True,True
-"async def assert_clarity_and_format_of_structure(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Verify that the response is clearly structured with the specified formatting and arrangement of information.
-    """"""
-    question = (
-        ""Is the summary clearly structured and formatted as directed in the prompt?""
-    )
-    return await ask_llm(prompt, response, question)
-","async def assert_response_structure_for_usefulness_and_clarity(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check if the response ensures that the requested structure is followed for usefulness and clarity.
-    """"""
-    required_sections = [
-        ""Title:"",
-        ""Speaker:"",
-        ""Subject:"",
-        ""Key Points:"",
-        ""Central Thesis:"",
-        ""Significant Details:"",
-        ""Conclusions and Takeaways:"",
-        ""Personal Insights or Criticisms:"",
-    ]
-    for section in required_sections:
-        if section not in response:
-            return False
-    return True
-",True,True
-"async def assert_clarity_and_format_of_structure(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Verify that the response is clearly structured with the specified formatting and arrangement of information.
-    """"""
-    question = (
-        ""Is the summary clearly structured and formatted as directed in the prompt?""
-    )
-    return await ask_llm(prompt, response, question)
-","async def assert_response_proper_summary_structure(
-    example: dict, prompt: str, response: str
-) -> bool:
-    """"""
-    Check that the response accomplishes the parts of the task successfully according to the instructed structure.
-    """"""
-    question = ""Does the response accomplish all parts of the task successfully according to the instructed structure, while providing a useful, clear, and succinct summary that captures the essence of the discussion?""
-    return await ask_llm(prompt, response, question)
-",True,True
-"async def assert_clarity_and_format_of_structure(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Verify that the response is clearly structured with the specified formatting and arrangement of information.
-    """"""
-    question = (
-        ""Is the summary clearly structured and formatted as directed in the prompt?""
-    )
-    return await ask_llm(prompt, response, question)
-","async def assert_correct_summary_structure(example: dict, prompt: str, response: str):
-    """"""
-    Check that the response follows the outlined structure: context first, followed by key points, etc.
-    """"""
-    structure_parts = [
-        ""Title:"",
-        ""Author:"",
-        ""Theme:"",
-        ""Key Points:"",
-        ""Central Thesis:"",
-        ""Significant Details:"",
-        ""Conclusions and Takeaways:"",
-    ]
-    structure_order = [
-        response.index(part) for part in structure_parts if part in response
-    ]
-
-    # A correctly structured response will have indices in increasing order
-    return all(
-        earlier < later for earlier, later in zip(structure_order, structure_order[1:])
-    )
-",True,True
-"async def assert_response_includes_date_and_setting_if_applicable(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check if the response includes the date and setting of the discussion or lecture when applicable.
-    """"""
-    if ""date"" in example and ""setting"" in example:
-        return (
-            f""Date: {example['date']}"" in response
-            and f""Setting: {example['setting']}"" in response
-        )
-    return True  # Assume it's fine if not applicable.
-","async def assert_inclusion_of_date_and_setting_if_applicable(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check if the response includes date and setting when applicable. Since applicability is subjective,
-    leverage LLM if the title implies a specific event or setting.
-    """"""
-    if ""lecture"" in response or ""discussion"" in response:
-        question = ""Does the summary unnecessarily omit any applicable date or setting details?""
-        return not await ask_llm(prompt, response, question)
-    return True  # Assume correct if no evident relation to specific events or settings.
-",True,True
-"async def assert_response_includes_date_and_setting_if_applicable(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check if the response includes the date and setting of the discussion or lecture when applicable.
-    """"""
-    if ""date"" in example and ""setting"" in example:
-        return (
-            f""Date: {example['date']}"" in response
-            and f""Setting: {example['setting']}"" in response
-        )
-    return True  # Assume it's fine if not applicable.
-","async def assert_response_includes_relevant_dates_and_settings(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check if the response includes relevant dates and settings if applicable.
-    """"""
-    # This is a bit trickier since the presence of dates and settings can highly vary.
-    # Let's ask the LLM to validate whether the response correctly includes or excludes
-    # dates and settings based on context from the example.
-    question = ""Does the response include the relevant dates and settings, if they were applicable?""
-    return await ask_llm(prompt, response, question)
-",True,True
-"async def assert_glossary_in_response_1(example: dict, prompt: str, response: str):
-    """"""
-    Check if the response contains a glossary of important terms with their definitions and context of use.
-    """"""
-    glossary_heading = ""Glossary of Important Terms:""
-    return (
-        glossary_heading in response
-    )  # For more detail, regex or further string checks could be used
-","async def assert_has_glossary_of_terms(
-    example: dict, prompt: str, response: str
-) -> bool:
-    """"""
-    Check that the response contains a glossary of important terms with definitions.
-    """"""
-    return ""glossary of important terms:"" in response.lower()
-",True,True
-"async def assert_minimum_number_of_key_points(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check if there are at least 3-5 key points listed in the response.
-    """"""
-    count = response.count(""-"")  # Assuming bullet points start with ""-""
-    return 3 <= count <= 5
-","async def assert_has_key_points(example: dict, prompt: str, response: str) -> bool:
-    """"""
-    Check that the response lists at least 3-5 key points using bullet points.
-    """"""
-    key_points_index = response.lower().find(""key points:"")
-    list_start_index = response[key_points_index:].find(""-"")
-    bullets = response[key_points_index + list_start_index :].count(""-"")
-    return bullets >= 3 and bullets <= 5
-",True,True
-"async def assert_key_points_are_bullet_points(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check if key points are formatted as bullet points for easy readability.
-    """"""
-    key_points_heading = ""Key Points:""
-    key_points_index = response.find(key_points_heading)
-    return (
-        response[key_points_index:].count(""\n- "") >= 3
-    )  # Looking for newline followed by ""- ""
-","async def assert_bullet_points_key_points(example: dict, prompt: str, response: str):
-    """"""
-    Check that the key points in the response are enumerated using bullet points.
-    """"""
-    return ""- "" in response
+    significant_details_heading = ""Significant Details:""
+    return significant_details_heading in response
 ",True,True
 "async def assert_significant_details_present(example: dict, prompt: str, response: str):
     """"""
@@ -595,12 +429,30 @@ func A,func B,A -> B,asked_LLM
     """"""
     return ""significant details:"" in response.lower()
 ",True,True
-"async def assert_conclusions_and_takeaways(example: dict, prompt: str, response: str):
+"async def assert_contains_conclusions_takeaways(
+    example: dict, prompt: str, response: str
+) -> bool:
     """"""
-    Check if the conclusion and takeaways of the talk are summarized in the response.
+    Check that the response includes a section on conclusions and takeaways.
     """"""
-    conclusions_heading = ""Conclusions and Takeaways:""
-    return conclusions_heading in response
+    return ""conclusions and takeaways:"" in response.lower()
+","async def assert_conclusions_and_takeaways_present(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check that the response summarizes the overall implications of the discussion
+    and any actionable insights in the conclusions and takeaways section.
+    """"""
+    return ""**Conclusions and Takeaways:**"" in response
+",True,True
+"async def assert_conclusions_and_takeaways_present(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check that the response summarizes the overall implications of the discussion
+    and any actionable insights in the conclusions and takeaways section.
+    """"""
+    return ""**Conclusions and Takeaways:**"" in response
 ","async def assert_contains_conclusions_takeaways(
     example: dict, prompt: str, response: str
 ) -> bool:
@@ -609,32 +461,162 @@ func A,func B,A -> B,asked_LLM
     """"""
     return ""conclusions and takeaways:"" in response.lower()
 ",True,True
-"async def assert_response_format_markdown(example: dict, prompt: str, response: str):
-    """"""
-    Check if the response format is written in Markdown.
-    """"""
-    # This check assumes that Markdown response must contain specific Markdown elements like headings or lists
-    return response.count(""# "") > 0 or response.count(""- "") > 0
-","async def assert_is_formatted_in_markdown(
+"async def assert_summary_within_word_count(
     example: dict, prompt: str, response: str
 ) -> bool:
     """"""
-    Check that the response is formatted in Markdown.
+    Check that the response is a summary within the 200-400 word count range.
     """"""
-    return response.strip().startswith(""#"")
+    word_count = len(response.split())
+    return 200 <= word_count <= 400
+","async def assert_response_word_count_within_limits(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response is within the 200-400 word count range.
+    """"""
+    word_count = len(response.split())
+    return 200 <= word_count <= 400
 ",True,True
-"async def assert_response_format_markdown(example: dict, prompt: str, response: str):
+"async def assert_response_word_count_within_limits(
+    example: dict, prompt: str, response: str
+):
     """"""
-    Check if the response format is written in Markdown.
+    Check if the response is within the 200-400 word count range.
     """"""
-    # This check assumes that Markdown response must contain specific Markdown elements like headings or lists
-    return response.count(""# "") > 0 or response.count(""- "") > 0
-","async def assert_markdown_format(example: dict, prompt: str, response: str):
+    word_count = len(response.split())
+    return 200 <= word_count <= 400
+","async def assert_summary_within_word_count(
+    example: dict, prompt: str, response: str
+) -> bool:
     """"""
-    Check that the response is formatted in Markdown.
+    Check that the response is a summary within the 200-400 word count range.
     """"""
-    is_markdown = response.startswith(""**Context:**"") and ""- "" in response
-    return is_markdown
+    word_count = len(response.split())
+    return 200 <= word_count <= 400
+",True,True
+"async def assert_response_maintains_essence_and_brevity(
+    example: dict, prompt: str, response: str
+) -> bool:
+    """"""
+    Check that the response maintains the essence of the discussion and creates a succinct summary.
+    """"""
+    question = ""Does the response maintain the essence of the discussion and create a succinct summary?""
+    return await ask_llm(prompt, response, question)
+","async def assert_is_clear_succinct_and_essence_captured(
+    example: dict, prompt: str, response: str
+) -> bool:
+    """"""
+    Check that the summary is clear, succinct, and captures the essence of the discussion using `ask_llm`.
+    """"""
+    question = ""Is the summary clear, succinct, and does it capture the essence of the discussion?""
+    return await ask_llm(prompt, response, question)
+",True,True
+"async def assert_is_clear_succinct_and_essence_captured(
+    example: dict, prompt: str, response: str
+) -> bool:
+    """"""
+    Check that the summary is clear, succinct, and captures the essence of the discussion using `ask_llm`.
+    """"""
+    question = ""Is the summary clear, succinct, and does it capture the essence of the discussion?""
+    return await ask_llm(prompt, response, question)
+","async def assert_response_maintains_essence_and_brevity(
+    example: dict, prompt: str, response: str
+) -> bool:
+    """"""
+    Check that the response maintains the essence of the discussion and creates a succinct summary.
+    """"""
+    question = ""Does the response maintain the essence of the discussion and create a succinct summary?""
+    return await ask_llm(prompt, response, question)
+",True,True
+"async def assert_response_free_from_personal_opinions(
+    example: dict, prompt: str, response: str
+) -> bool:
+    """"""
+    Check that the response is free from opinions, as the section for personal insights or criticisms is removed.
+    """"""
+    question = ""Does the response include any personal insights or criticisms, contradicting the requirement to be free from opinions?""
+    # We expect a False response here, so we negate the response from the LLM.
+    return not await ask_llm(prompt, response, question)
+","async def assert_exclusion_of_irrelevant_information(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Use an LLM to determine if the response excludes any information not relevant to the summary,
+    such as personal opinions or information outside of the original discussion.
+    """"""
+    question = ""Does the response exclude any information not relevant to the summary, such as personal opinions or information outside the boundaries of the original discussion?""
+    return await ask_llm(prompt, response, question)
+",True,True
+"async def assert_exclusion_of_irrelevant_information(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Use an LLM to determine if the response excludes any information not relevant to the summary,
+    such as personal opinions or information outside of the original discussion.
+    """"""
+    question = ""Does the response exclude any information not relevant to the summary, such as personal opinions or information outside the boundaries of the original discussion?""
+    return await ask_llm(prompt, response, question)
+","async def assert_response_free_from_personal_opinions(
+    example: dict, prompt: str, response: str
+) -> bool:
+    """"""
+    Check that the response is free from opinions, as the section for personal insights or criticisms is removed.
+    """"""
+    question = ""Does the response include any personal insights or criticisms, contradicting the requirement to be free from opinions?""
+    # We expect a False response here, so we negate the response from the LLM.
+    return not await ask_llm(prompt, response, question)
+",True,True
+"async def assert_response_clearly_a_summary(
+    example: dict, prompt: str, response: str
+) -> bool:
+    """"""
+    Check that the response clearly indicates it is a summary and not the original content.
+    """"""
+    question = ""Is it clear from the response that it is a summary and not the original content?""
+    return await ask_llm(prompt, response, question)
+","async def assert_clear_central_thesis(example: dict, prompt: str, response: str):
+    """"""
+    Check that the response clearly articulates the central thesis or main argument
+    of the discussion.
+    """"""
+    question = ""Does the response clearly articulate the central thesis or main argument of the discussion?""
+    return await ask_llm(prompt, response, question)
+",True,True
+"async def assert_clear_central_thesis(example: dict, prompt: str, response: str):
+    """"""
+    Check that the response clearly articulates the central thesis or main argument
+    of the discussion.
+    """"""
+    question = ""Does the response clearly articulate the central thesis or main argument of the discussion?""
+    return await ask_llm(prompt, response, question)
+","async def assert_response_clearly_a_summary(
+    example: dict, prompt: str, response: str
+) -> bool:
+    """"""
+    Check that the response clearly indicates it is a summary and not the original content.
+    """"""
+    question = ""Is it clear from the response that it is a summary and not the original content?""
+    return await ask_llm(prompt, response, question)
+",True,True
+"async def assert_has_context(example: dict, prompt: str, response: str) -> bool:
+    """"""
+    Check that the LLM response begins with context including the title, speaker or author,
+    and overarching subject or theme of the discussion or lecture.
+    """"""
+    return response.lower().startswith(""context:"")
+","async def assert_response_begins_with_context_2(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check that the response begins with context, including the title, the speaker or author,
+    and the overarching subject or theme.
+    """"""
+    return (
+        response.startswith(""**Title:**"")
+        and (""**Author:**"" in response)
+        and (""**Subject:**"" in response)
+    )
 ",True,True
 "async def assert_response_begins_with_context_2(
     example: dict, prompt: str, response: str
@@ -655,6 +637,67 @@ func A,func B,A -> B,asked_LLM
     """"""
     return response.lower().startswith(""context:"")
 ",True,True
+"async def assert_inclusion_of_date_and_setting_if_applicable(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response includes date and setting when applicable. Since applicability is subjective,
+    leverage LLM if the title implies a specific event or setting.
+    """"""
+    if ""lecture"" in response or ""discussion"" in response:
+        question = ""Does the summary unnecessarily omit any applicable date or setting details?""
+        return not await ask_llm(prompt, response, question)
+    return True  # Assume correct if no evident relation to specific events or settings.
+","async def assert_response_includes_date_and_setting_if_applicable(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response includes the date and setting of the discussion or lecture when applicable.
+    """"""
+    if ""date"" in example and ""setting"" in example:
+        return (
+            f""Date: {example['date']}"" in response
+            and f""Setting: {example['setting']}"" in response
+        )
+    return True  # Assume it's fine if not applicable.
+",True,True
+"async def assert_response_includes_date_and_setting_if_applicable(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response includes the date and setting of the discussion or lecture when applicable.
+    """"""
+    if ""date"" in example and ""setting"" in example:
+        return (
+            f""Date: {example['date']}"" in response
+            and f""Setting: {example['setting']}"" in response
+        )
+    return True  # Assume it's fine if not applicable.
+","async def assert_inclusion_of_date_and_setting_if_applicable(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response includes date and setting when applicable. Since applicability is subjective,
+    leverage LLM if the title implies a specific event or setting.
+    """"""
+    if ""lecture"" in response or ""discussion"" in response:
+        question = ""Does the summary unnecessarily omit any applicable date or setting details?""
+        return not await ask_llm(prompt, response, question)
+    return True  # Assume correct if no evident relation to specific events or settings.
+",True,True
+"async def assert_has_central_thesis(example: dict, prompt: str, response: str) -> bool:
+    """"""
+    Check that the response clearly articulates the central thesis or main argument of the discussion.
+    """"""
+    return ""central thesis:"" in response.lower()
+","async def assert_response_contains_central_thesis(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check that the response contains a clearly articulated central thesis or main argument.
+    """"""
+    return ""**Thesis:**"" in response
+",True,True
 "async def assert_response_contains_central_thesis(
     example: dict, prompt: str, response: str
 ):
@@ -668,50 +711,7 @@ func A,func B,A -> B,asked_LLM
     """"""
     return ""central thesis:"" in response.lower()
 ",True,True
-"async def assert_response_has_at_least_3_key_points(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check that the response lists at least 3 key points in a bulleted format.
-    """"""
-    try:
-        key_points_section = response.split(""**Key Points:**"")[1]
-        key_points = [
-            point for point in key_points_section.split(""\n"") if point.startswith(""-"")
-        ]
-        return len(key_points) >= 3
-    except:
-        return False
-","async def assert_minimum_key_points_listed(example: dict, prompt: str, response: str):
-    """"""
-    Check that the response lists at least 3 key points.
-    """"""
-    return (
-        len(
-            [
-                point
-                for point in response.split(""-"")
-                if ""Key Points:"" in point or ""point:"" in point
-            ]
-        )
-        >= 3
-    )
-",True,True
-"async def assert_response_has_at_least_3_key_points(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check that the response lists at least 3 key points in a bulleted format.
-    """"""
-    try:
-        key_points_section = response.split(""**Key Points:**"")[1]
-        key_points = [
-            point for point in key_points_section.split(""\n"") if point.startswith(""-"")
-        ]
-        return len(key_points) >= 3
-    except:
-        return False
-","async def assert_has_key_points(example: dict, prompt: str, response: str) -> bool:
+"async def assert_has_key_points(example: dict, prompt: str, response: str) -> bool:
     """"""
     Check that the response lists at least 3-5 key points using bullet points.
     """"""
@@ -719,21 +719,6 @@ func A,func B,A -> B,asked_LLM
     list_start_index = response[key_points_index:].find(""-"")
     bullets = response[key_points_index + list_start_index :].count(""-"")
     return bullets >= 3 and bullets <= 5
-",True,True
-"async def assert_response_has_at_least_3_key_points(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check that the response lists at least 3 key points in a bulleted format.
-    """"""
-    try:
-        key_points_section = response.split(""**Key Points:**"")[1]
-        key_points = [
-            point for point in key_points_section.split(""\n"") if point.startswith(""-"")
-        ]
-        return len(key_points) >= 3
-    except:
-        return False
 ","async def assert_minimum_number_of_key_points(
     example: dict, prompt: str, response: str
 ):
@@ -743,22 +728,124 @@ func A,func B,A -> B,asked_LLM
     count = response.count(""-"")  # Assuming bullet points start with ""-""
     return 3 <= count <= 5
 ",True,True
-"async def assert_conclusions_and_takeaways_present(
+"async def assert_minimum_number_of_key_points(
     example: dict, prompt: str, response: str
 ):
     """"""
-    Check that the response summarizes the overall implications of the discussion
-    and any actionable insights in the conclusions and takeaways section.
+    Check if there are at least 3-5 key points listed in the response.
     """"""
-    return ""**Conclusions and Takeaways:**"" in response
-","async def assert_has_conclusions_and_takeaways(
+    count = response.count(""-"")  # Assuming bullet points start with ""-""
+    return 3 <= count <= 5
+","async def assert_has_key_points(example: dict, prompt: str, response: str) -> bool:
+    """"""
+    Check that the response lists at least 3-5 key points using bullet points.
+    """"""
+    key_points_index = response.lower().find(""key points:"")
+    list_start_index = response[key_points_index:].find(""-"")
+    bullets = response[key_points_index + list_start_index :].count(""-"")
+    return bullets >= 3 and bullets <= 5
+",True,True
+"async def assert_has_key_points(example: dict, prompt: str, response: str) -> bool:
+    """"""
+    Check that the response lists at least 3-5 key points using bullet points.
+    """"""
+    key_points_index = response.lower().find(""key points:"")
+    list_start_index = response[key_points_index:].find(""-"")
+    bullets = response[key_points_index + list_start_index :].count(""-"")
+    return bullets >= 3 and bullets <= 5
+","async def assert_key_points_are_bullet_points(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if key points are formatted as bullet points for easy readability.
+    """"""
+    key_points_heading = ""Key Points:""
+    key_points_index = response.find(key_points_heading)
+    return (
+        response[key_points_index:].count(""\n- "") >= 3
+    )  # Looking for newline followed by ""- ""
+",True,True
+"async def assert_key_points_are_bullet_points(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if key points are formatted as bullet points for easy readability.
+    """"""
+    key_points_heading = ""Key Points:""
+    key_points_index = response.find(key_points_heading)
+    return (
+        response[key_points_index:].count(""\n- "") >= 3
+    )  # Looking for newline followed by ""- ""
+","async def assert_has_key_points(example: dict, prompt: str, response: str) -> bool:
+    """"""
+    Check that the response lists at least 3-5 key points using bullet points.
+    """"""
+    key_points_index = response.lower().find(""key points:"")
+    list_start_index = response[key_points_index:].find(""-"")
+    bullets = response[key_points_index + list_start_index :].count(""-"")
+    return bullets >= 3 and bullets <= 5
+",True,True
+"async def assert_is_formatted_in_markdown(
     example: dict, prompt: str, response: str
 ) -> bool:
     """"""
-    Check that the response includes conclusions and takeaways summarizing the overall implications
-    of the discussion and any actionable insights.
+    Check that the response is formatted in Markdown.
     """"""
-    return ""conclusions and takeaways:"" in response.lower()
+    return response.strip().startswith(""#"")
+","async def assert_response_format_markdown(example: dict, prompt: str, response: str):
+    """"""
+    Check if the response format is written in Markdown.
+    """"""
+    # This check assumes that Markdown response must contain specific Markdown elements like headings or lists
+    return response.count(""# "") > 0 or response.count(""- "") > 0
+",True,True
+"async def assert_response_format_markdown(example: dict, prompt: str, response: str):
+    """"""
+    Check if the response format is written in Markdown.
+    """"""
+    # This check assumes that Markdown response must contain specific Markdown elements like headings or lists
+    return response.count(""# "") > 0 or response.count(""- "") > 0
+","async def assert_is_formatted_in_markdown(
+    example: dict, prompt: str, response: str
+) -> bool:
+    """"""
+    Check that the response is formatted in Markdown.
+    """"""
+    return response.strip().startswith(""#"")
+",True,True
+"async def assert_no_unnecessary_details(
+    example: dict, prompt: str, response: str
+) -> bool:
+    """"""
+    Check that the response does not include any unnecessary details that do not aid in understanding
+    the main points using `ask_llm`.
+    """"""
+    question = ""Does the summary include any unnecessary details that do not aid in understanding the main points?""
+    # We ask the LLM the opposite question; if it returns True, we include unnecessary details, so the result should be False.
+    return not await ask_llm(prompt, response, question)
+","async def assert_no_word_count_requirement(example: dict, prompt: str, response: str):
+    """"""
+    Check if there's no specific word count requirement mentioned in the response.
+    """"""
+    question = ""Is there a specific word count mentioned in the response?""
+    return not await ask_llm(prompt, response, question)
+",True,True
+"async def assert_no_word_count_requirement(example: dict, prompt: str, response: str):
+    """"""
+    Check if there's no specific word count requirement mentioned in the response.
+    """"""
+    question = ""Is there a specific word count mentioned in the response?""
+    return not await ask_llm(prompt, response, question)
+","async def assert_no_unnecessary_details(
+    example: dict, prompt: str, response: str
+) -> bool:
+    """"""
+    Check that the response does not include any unnecessary details that do not aid in understanding
+    the main points using `ask_llm`.
+    """"""
+    question = ""Does the summary include any unnecessary details that do not aid in understanding the main points?""
+    # We ask the LLM the opposite question; if it returns True, we include unnecessary details, so the result should be False.
+    return not await ask_llm(prompt, response, question)
 ",True,True
 "async def assert_response_begins_with_outline(
     example: dict, prompt: str, response: str
@@ -2372,6 +2459,61 @@ func A,func B,A -> B,asked_LLM
     )  # Arbitrarily assumes thesis should be longer than 5 words
     return has_central_thesis
 ",False,False
+"async def assert_response_lists_key_points_with_bullets(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response lists 3-5 key points using bullet points.
+    """"""
+    key_points_start = response.find(""Key Points:"")
+    key_points_end = response.find(""Central Thesis:"", key_points_start)
+    key_points_text = response[key_points_start:key_points_end].strip()
+
+    if key_points_start == -1 or key_points_end == -1:
+        return False
+
+    bullet_points = key_points_text.count(
+        ""-""
+    )  # Assume bullet points are marked with hyphens
+    return 3 <= bullet_points <= 5
+","async def assert_minimum_number_of_key_points(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if there are at least 3-5 key points listed in the response.
+    """"""
+    count = response.count(""-"")  # Assuming bullet points start with ""-""
+    return 3 <= count <= 5
+",True,False
+"async def assert_response_lists_key_points_with_bullets(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response lists 3-5 key points using bullet points.
+    """"""
+    key_points_start = response.find(""Key Points:"")
+    key_points_end = response.find(""Central Thesis:"", key_points_start)
+    key_points_text = response[key_points_start:key_points_end].strip()
+
+    if key_points_start == -1 or key_points_end == -1:
+        return False
+
+    bullet_points = key_points_text.count(
+        ""-""
+    )  # Assume bullet points are marked with hyphens
+    return 3 <= bullet_points <= 5
+","async def assert_key_points_are_bullet_points(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if key points are formatted as bullet points for easy readability.
+    """"""
+    key_points_heading = ""Key Points:""
+    key_points_index = response.find(key_points_heading)
+    return (
+        response[key_points_index:].count(""\n- "") >= 3
+    )  # Looking for newline followed by ""- ""
+",True,False
 "async def assert_response_summarizes_implications(
     example: dict, prompt: str, response: str
 ):
@@ -5450,18 +5592,6 @@ func A,func B,A -> B,asked_LLM
     Check if the LLM response begins with a 'Context' section, including title, speaker/author, and subject/theme.
     """"""
     return response.startswith(""**Context:**"")
-","async def assert_response_includes_context(example: dict, prompt: str, response: str):
-    """"""
-    Check if the response includes context at the beginning with the title, speaker/author,
-    and overarching theme.
-    """"""
-    return ""Title:"" in response and ""Speaker:"" in response and ""Subject:"" in response
-",False,False
-"async def assert_contains_context_section(example: dict, prompt: str, response: str):
-    """"""
-    Check if the LLM response begins with a 'Context' section, including title, speaker/author, and subject/theme.
-    """"""
-    return response.startswith(""**Context:**"")
 ","async def assert_response_lists_key_points_with_bullets(
     example: dict, prompt: str, response: str
 ):
@@ -5809,18 +5939,6 @@ func A,func B,A -> B,asked_LLM
     """"""
     question = ""Is there a specific word count mentioned in the response?""
     return not await ask_llm(prompt, response, question)
-",False,False
-"async def assert_contains_context_section(example: dict, prompt: str, response: str):
-    """"""
-    Check if the LLM response begins with a 'Context' section, including title, speaker/author, and subject/theme.
-    """"""
-    return response.startswith(""**Context:**"")
-","async def assert_has_context(example: dict, prompt: str, response: str) -> bool:
-    """"""
-    Check that the LLM response begins with context including the title, speaker or author,
-    and overarching subject or theme of the discussion or lecture.
-    """"""
-    return response.lower().startswith(""context:"")
 ",False,False
 "async def assert_contains_context_section(example: dict, prompt: str, response: str):
     """"""
@@ -6552,6 +6670,20 @@ func A,func B,A -> B,asked_LLM
     significant_details_heading = ""Significant Details:""
     return significant_details_heading in response
 ",False,False
+"async def assert_contains_conclusions_takeaways(
+    example: dict, prompt: str, response: str
+) -> bool:
+    """"""
+    Check that the response includes a section on conclusions and takeaways.
+    """"""
+    return ""conclusions and takeaways:"" in response.lower()
+","async def assert_conclusions_and_takeaways(example: dict, prompt: str, response: str):
+    """"""
+    Check if the conclusion and takeaways of the talk are summarized in the response.
+    """"""
+    conclusions_heading = ""Conclusions and Takeaways:""
+    return conclusions_heading in response
+",True,False
 "async def assert_contains_conclusions_takeaways(
     example: dict, prompt: str, response: str
 ) -> bool:
@@ -6726,22 +6858,6 @@ func A,func B,A -> B,asked_LLM
     Check that the response includes a section on conclusions and takeaways.
     """"""
     return ""conclusions and takeaways:"" in response.lower()
-","async def assert_conclusions_and_takeaways_present(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check that the response summarizes the overall implications of the discussion
-    and any actionable insights in the conclusions and takeaways section.
-    """"""
-    return ""**Conclusions and Takeaways:**"" in response
-",False,False
-"async def assert_contains_conclusions_takeaways(
-    example: dict, prompt: str, response: str
-) -> bool:
-    """"""
-    Check that the response includes a section on conclusions and takeaways.
-    """"""
-    return ""conclusions and takeaways:"" in response.lower()
 ","async def assert_glossary_included(example: dict, prompt: str, response: str):
     """"""
     Check that the response includes a glossary of important terms with definitions
@@ -8177,35 +8293,6 @@ func A,func B,A -> B,asked_LLM
         ""*Be very clear this is not a part of the original content.*""
         in insights_section
     )
-",False,False
-"async def assert_response_proper_summary_structure(
-    example: dict, prompt: str, response: str
-) -> bool:
-    """"""
-    Check that the response accomplishes the parts of the task successfully according to the instructed structure.
-    """"""
-    question = ""Does the response accomplish all parts of the task successfully according to the instructed structure, while providing a useful, clear, and succinct summary that captures the essence of the discussion?""
-    return await ask_llm(prompt, response, question)
-","async def assert_response_structure_for_usefulness_and_clarity(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check if the response ensures that the requested structure is followed for usefulness and clarity.
-    """"""
-    required_sections = [
-        ""Title:"",
-        ""Speaker:"",
-        ""Subject:"",
-        ""Key Points:"",
-        ""Central Thesis:"",
-        ""Significant Details:"",
-        ""Conclusions and Takeaways:"",
-        ""Personal Insights or Criticisms:"",
-    ]
-    for section in required_sections:
-        if section not in response:
-            return False
-    return True
 ",False,False
 "async def assert_response_proper_summary_structure(
     example: dict, prompt: str, response: str
@@ -11152,22 +11239,6 @@ func A,func B,A -> B,asked_LLM
     """"""
     question = ""Is it clear from the response that it is a summary and not the original content?""
     return await ask_llm(prompt, response, question)
-","async def assert_clear_central_thesis(example: dict, prompt: str, response: str):
-    """"""
-    Check that the response clearly articulates the central thesis or main argument
-    of the discussion.
-    """"""
-    question = ""Does the response clearly articulate the central thesis or main argument of the discussion?""
-    return await ask_llm(prompt, response, question)
-",False,False
-"async def assert_response_clearly_a_summary(
-    example: dict, prompt: str, response: str
-) -> bool:
-    """"""
-    Check that the response clearly indicates it is a summary and not the original content.
-    """"""
-    question = ""Is it clear from the response that it is a summary and not the original content?""
-    return await ask_llm(prompt, response, question)
 ","async def assert_bullet_points_key_points(example: dict, prompt: str, response: str):
     """"""
     Check that the key points in the response are enumerated using bullet points.
@@ -12350,6 +12421,29 @@ func A,func B,A -> B,asked_LLM
     """"""
     word_count = len(response.split())
     return 200 <= word_count <= 400
+",False,False
+"async def assert_inclusion_of_date_and_setting_if_applicable(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response includes date and setting when applicable. Since applicability is subjective,
+    leverage LLM if the title implies a specific event or setting.
+    """"""
+    if ""lecture"" in response or ""discussion"" in response:
+        question = ""Does the summary unnecessarily omit any applicable date or setting details?""
+        return not await ask_llm(prompt, response, question)
+    return True  # Assume correct if no evident relation to specific events or settings.
+","async def assert_response_includes_relevant_dates_and_settings(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response includes relevant dates and settings if applicable.
+    """"""
+    # This is a bit trickier since the presence of dates and settings can highly vary.
+    # Let's ask the LLM to validate whether the response correctly includes or excludes
+    # dates and settings based on context from the example.
+    question = ""Does the response include the relevant dates and settings, if they were applicable?""
+    return await ask_llm(prompt, response, question)
 ",False,False
 "async def assert_inclusion_of_date_and_setting_if_applicable(
     example: dict, prompt: str, response: str
@@ -13518,11 +13612,63 @@ func A,func B,A -> B,asked_LLM
         )
         >= 3
     )
-","async def assert_bullet_points_key_points(example: dict, prompt: str, response: str):
+","async def assert_minimum_number_of_key_points(
+    example: dict, prompt: str, response: str
+):
     """"""
-    Check that the key points in the response are enumerated using bullet points.
+    Check if there are at least 3-5 key points listed in the response.
     """"""
-    return ""- "" in response
+    count = response.count(""-"")  # Assuming bullet points start with ""-""
+    return 3 <= count <= 5
+",True,False
+"async def assert_minimum_key_points_listed(example: dict, prompt: str, response: str):
+    """"""
+    Check that the response lists at least 3 key points.
+    """"""
+    return (
+        len(
+            [
+                point
+                for point in response.split(""-"")
+                if ""Key Points:"" in point or ""point:"" in point
+            ]
+        )
+        >= 3
+    )
+","async def assert_key_points_are_bullet_points(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if key points are formatted as bullet points for easy readability.
+    """"""
+    key_points_heading = ""Key Points:""
+    key_points_index = response.find(key_points_heading)
+    return (
+        response[key_points_index:].count(""\n- "") >= 3
+    )  # Looking for newline followed by ""- ""
+",True,False
+"async def assert_minimum_key_points_listed(example: dict, prompt: str, response: str):
+    """"""
+    Check that the response lists at least 3 key points.
+    """"""
+    return (
+        len(
+            [
+                point
+                for point in response.split(""-"")
+                if ""Key Points:"" in point or ""point:"" in point
+            ]
+        )
+        >= 3
+    )
+","async def assert_has_key_points(example: dict, prompt: str, response: str) -> bool:
+    """"""
+    Check that the response lists at least 3-5 key points using bullet points.
+    """"""
+    key_points_index = response.lower().find(""key points:"")
+    list_start_index = response[key_points_index:].find(""-"")
+    bullets = response[key_points_index + list_start_index :].count(""-"")
+    return bullets >= 3 and bullets <= 5
 ",True,False
 "async def assert_brief_and_succinct_preservation_of_essence(
     example: dict, prompt: str, response: str
@@ -13823,6 +13969,23 @@ func A,func B,A -> B,asked_LLM
     """"""
     question = ""Is the summary brief and succinct while preserving the essence of the discussion?""
     return await ask_llm(prompt, response, question)
+","async def assert_response_maintains_essence_and_brevity(
+    example: dict, prompt: str, response: str
+) -> bool:
+    """"""
+    Check that the response maintains the essence of the discussion and creates a succinct summary.
+    """"""
+    question = ""Does the response maintain the essence of the discussion and create a succinct summary?""
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def assert_brief_and_succinct_preservation_of_essence(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check that the response is brief and succinct while preserving the essence of the discussion.
+    """"""
+    question = ""Is the summary brief and succinct while preserving the essence of the discussion?""
+    return await ask_llm(prompt, response, question)
 ","async def assert_response_free_from_personal_opinions(
     example: dict, prompt: str, response: str
 ) -> bool:
@@ -14203,6 +14366,23 @@ func A,func B,A -> B,asked_LLM
     of the discussion and any actionable insights.
     """"""
     return ""conclusions and takeaways:"" in response.lower()
+",False,False
+"async def assert_brief_and_succinct_preservation_of_essence(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check that the response is brief and succinct while preserving the essence of the discussion.
+    """"""
+    question = ""Is the summary brief and succinct while preserving the essence of the discussion?""
+    return await ask_llm(prompt, response, question)
+","async def assert_is_clear_succinct_and_essence_captured(
+    example: dict, prompt: str, response: str
+) -> bool:
+    """"""
+    Check that the summary is clear, succinct, and captures the essence of the discussion using `ask_llm`.
+    """"""
+    question = ""Is the summary clear, succinct, and does it capture the essence of the discussion?""
+    return await ask_llm(prompt, response, question)
 ",False,False
 "async def assert_brief_and_succinct_preservation_of_essence(
     example: dict, prompt: str, response: str
@@ -16092,6 +16272,48 @@ func A,func B,A -> B,asked_LLM
     return all(
         earlier < later for earlier, later in zip(structure_order, structure_order[1:])
     )
+","async def assert_response_structure_for_usefulness_and_clarity(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response ensures that the requested structure is followed for usefulness and clarity.
+    """"""
+    required_sections = [
+        ""Title:"",
+        ""Speaker:"",
+        ""Subject:"",
+        ""Key Points:"",
+        ""Central Thesis:"",
+        ""Significant Details:"",
+        ""Conclusions and Takeaways:"",
+        ""Personal Insights or Criticisms:"",
+    ]
+    for section in required_sections:
+        if section not in response:
+            return False
+    return True
+",False,False
+"async def assert_correct_summary_structure(example: dict, prompt: str, response: str):
+    """"""
+    Check that the response follows the outlined structure: context first, followed by key points, etc.
+    """"""
+    structure_parts = [
+        ""Title:"",
+        ""Author:"",
+        ""Theme:"",
+        ""Key Points:"",
+        ""Central Thesis:"",
+        ""Significant Details:"",
+        ""Conclusions and Takeaways:"",
+    ]
+    structure_order = [
+        response.index(part) for part in structure_parts if part in response
+    ]
+
+    # A correctly structured response will have indices in increasing order
+    return all(
+        earlier < later for earlier, later in zip(structure_order, structure_order[1:])
+    )
 ","async def assert_contains_outline(example: dict, prompt: str, response: str) -> bool:
     """"""
     Check that the response begins with an outline planning the summary's execution.
@@ -17152,6 +17374,42 @@ func A,func B,A -> B,asked_LLM
     and context usage if applicable.
     """"""
     return ""**Glossary of Important Terms:**"" in response
+",False,False
+"async def assert_correct_summary_structure(example: dict, prompt: str, response: str):
+    """"""
+    Check that the response follows the outlined structure: context first, followed by key points, etc.
+    """"""
+    structure_parts = [
+        ""Title:"",
+        ""Author:"",
+        ""Theme:"",
+        ""Key Points:"",
+        ""Central Thesis:"",
+        ""Significant Details:"",
+        ""Conclusions and Takeaways:"",
+    ]
+    structure_order = [
+        response.index(part) for part in structure_parts if part in response
+    ]
+
+    # A correctly structured response will have indices in increasing order
+    return all(
+        earlier < later for earlier, later in zip(structure_order, structure_order[1:])
+    )
+","async def assert_correct_summary_headers(example: dict, prompt: str, response: str):
+    """"""
+    Check that each section of the summary has clearly defined Markdown headers.
+    """"""
+    headers = [
+        ""**Title:**"",
+        ""**Author:**"",
+        ""**Subject:**"",
+        ""**Thesis:**"",
+        ""**Key Points:**"",
+        ""**Conclusions and Takeaways:**"",
+        ""**Glossary of Important Terms:**"",
+    ]
+    return all(header in response for header in headers)
 ",False,False
 "async def assert_correct_summary_structure(example: dict, prompt: str, response: str):
     """"""
@@ -17674,6 +17932,37 @@ func A,func B,A -> B,asked_LLM
         ""Is the summary clearly structured and formatted as directed in the prompt?""
     )
     return await ask_llm(prompt, response, question)
+","async def assert_response_structure_for_usefulness_and_clarity(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response ensures that the requested structure is followed for usefulness and clarity.
+    """"""
+    required_sections = [
+        ""Title:"",
+        ""Speaker:"",
+        ""Subject:"",
+        ""Key Points:"",
+        ""Central Thesis:"",
+        ""Significant Details:"",
+        ""Conclusions and Takeaways:"",
+        ""Personal Insights or Criticisms:"",
+    ]
+    for section in required_sections:
+        if section not in response:
+            return False
+    return True
+",False,False
+"async def assert_clarity_and_format_of_structure(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Verify that the response is clearly structured with the specified formatting and arrangement of information.
+    """"""
+    question = (
+        ""Is the summary clearly structured and formatted as directed in the prompt?""
+    )
+    return await ask_llm(prompt, response, question)
 ","async def assert_contains_outline(example: dict, prompt: str, response: str) -> bool:
     """"""
     Check that the response begins with an outline planning the summary's execution.
@@ -17933,6 +18222,38 @@ func A,func B,A -> B,asked_LLM
     """"""
     question = ""Does this summary accurately represent the provided text, reflecting comprehension of the material?""
     return await ask_llm(prompt, response, question)
+",False,False
+"async def assert_clarity_and_format_of_structure(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Verify that the response is clearly structured with the specified formatting and arrangement of information.
+    """"""
+    question = (
+        ""Is the summary clearly structured and formatted as directed in the prompt?""
+    )
+    return await ask_llm(prompt, response, question)
+","async def assert_correct_summary_structure(example: dict, prompt: str, response: str):
+    """"""
+    Check that the response follows the outlined structure: context first, followed by key points, etc.
+    """"""
+    structure_parts = [
+        ""Title:"",
+        ""Author:"",
+        ""Theme:"",
+        ""Key Points:"",
+        ""Central Thesis:"",
+        ""Significant Details:"",
+        ""Conclusions and Takeaways:"",
+    ]
+    structure_order = [
+        response.index(part) for part in structure_parts if part in response
+    ]
+
+    # A correctly structured response will have indices in increasing order
+    return all(
+        earlier < later for earlier, later in zip(structure_order, structure_order[1:])
+    )
 ",False,False
 "async def assert_clarity_and_format_of_structure(
     example: dict, prompt: str, response: str
@@ -18840,6 +19161,30 @@ func A,func B,A -> B,asked_LLM
             and f""Setting: {example['setting']}"" in response
         )
     return True  # Assume it's fine if not applicable.
+","async def assert_response_includes_relevant_dates_and_settings(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response includes relevant dates and settings if applicable.
+    """"""
+    # This is a bit trickier since the presence of dates and settings can highly vary.
+    # Let's ask the LLM to validate whether the response correctly includes or excludes
+    # dates and settings based on context from the example.
+    question = ""Does the response include the relevant dates and settings, if they were applicable?""
+    return await ask_llm(prompt, response, question)
+",False,False
+"async def assert_response_includes_date_and_setting_if_applicable(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response includes the date and setting of the discussion or lecture when applicable.
+    """"""
+    if ""date"" in example and ""setting"" in example:
+        return (
+            f""Date: {example['date']}"" in response
+            and f""Setting: {example['setting']}"" in response
+        )
+    return True  # Assume it's fine if not applicable.
 ","async def assert_response_clear_distinction_between_content_and_insights(
     example: dict, prompt: str, response: str
 ):
@@ -20981,6 +21326,75 @@ func A,func B,A -> B,asked_LLM
     )  # Arbitrarily assumes thesis should be longer than 5 words
     return has_central_thesis
 ",False,False
+"async def assert_minimum_number_of_key_points(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if there are at least 3-5 key points listed in the response.
+    """"""
+    count = response.count(""-"")  # Assuming bullet points start with ""-""
+    return 3 <= count <= 5
+","async def assert_response_lists_key_points_with_bullets(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response lists 3-5 key points using bullet points.
+    """"""
+    key_points_start = response.find(""Key Points:"")
+    key_points_end = response.find(""Central Thesis:"", key_points_start)
+    key_points_text = response[key_points_start:key_points_end].strip()
+
+    if key_points_start == -1 or key_points_end == -1:
+        return False
+
+    bullet_points = key_points_text.count(
+        ""-""
+    )  # Assume bullet points are marked with hyphens
+    return 3 <= bullet_points <= 5
+",True,False
+"async def assert_minimum_number_of_key_points(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if there are at least 3-5 key points listed in the response.
+    """"""
+    count = response.count(""-"")  # Assuming bullet points start with ""-""
+    return 3 <= count <= 5
+","async def assert_minimum_key_points_listed(example: dict, prompt: str, response: str):
+    """"""
+    Check that the response lists at least 3 key points.
+    """"""
+    return (
+        len(
+            [
+                point
+                for point in response.split(""-"")
+                if ""Key Points:"" in point or ""point:"" in point
+            ]
+        )
+        >= 3
+    )
+",True,False
+"async def assert_minimum_number_of_key_points(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if there are at least 3-5 key points listed in the response.
+    """"""
+    count = response.count(""-"")  # Assuming bullet points start with ""-""
+    return 3 <= count <= 5
+","async def assert_key_points_are_bullet_points(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if key points are formatted as bullet points for easy readability.
+    """"""
+    key_points_heading = ""Key Points:""
+    key_points_index = response.find(key_points_heading)
+    return (
+        response[key_points_index:].count(""\n- "") >= 3
+    )  # Looking for newline followed by ""- ""
+",True,False
 "async def assert_key_points_are_bullet_points(
     example: dict, prompt: str, response: str
 ):
@@ -21581,26 +21995,6 @@ func A,func B,A -> B,asked_LLM
     and overarching subject or theme of the discussion or lecture.
     """"""
     return response.lower().startswith(""context:"")
-",False,False
-"async def assert_key_points_are_bullet_points(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check if key points are formatted as bullet points for easy readability.
-    """"""
-    key_points_heading = ""Key Points:""
-    key_points_index = response.find(key_points_heading)
-    return (
-        response[key_points_index:].count(""\n- "") >= 3
-    )  # Looking for newline followed by ""- ""
-","async def assert_has_key_points(example: dict, prompt: str, response: str) -> bool:
-    """"""
-    Check that the response lists at least 3-5 key points using bullet points.
-    """"""
-    key_points_index = response.lower().find(""key points:"")
-    list_start_index = response[key_points_index:].find(""-"")
-    bullets = response[key_points_index + list_start_index :].count(""-"")
-    return bullets >= 3 and bullets <= 5
 ",False,False
 "async def assert_key_points_are_bullet_points(
     example: dict, prompt: str, response: str
@@ -22279,6 +22673,20 @@ func A,func B,A -> B,asked_LLM
     """"""
     return ""significant details:"" in response.lower()
 ",False,False
+"async def assert_conclusions_and_takeaways(example: dict, prompt: str, response: str):
+    """"""
+    Check if the conclusion and takeaways of the talk are summarized in the response.
+    """"""
+    conclusions_heading = ""Conclusions and Takeaways:""
+    return conclusions_heading in response
+","async def assert_contains_conclusions_takeaways(
+    example: dict, prompt: str, response: str
+) -> bool:
+    """"""
+    Check that the response includes a section on conclusions and takeaways.
+    """"""
+    return ""conclusions and takeaways:"" in response.lower()
+",True,False
 "async def assert_conclusions_and_takeaways(example: dict, prompt: str, response: str):
     """"""
     Check if the conclusion and takeaways of the talk are summarized in the response.
@@ -23831,6 +24239,19 @@ func A,func B,A -> B,asked_LLM
     """"""
     # This check assumes that Markdown response must contain specific Markdown elements like headings or lists
     return response.count(""# "") > 0 or response.count(""- "") > 0
+","async def assert_markdown_format(example: dict, prompt: str, response: str):
+    """"""
+    Check that the response is formatted in Markdown.
+    """"""
+    is_markdown = response.startswith(""**Context:**"") and ""- "" in response
+    return is_markdown
+",False,False
+"async def assert_response_format_markdown(example: dict, prompt: str, response: str):
+    """"""
+    Check if the response format is written in Markdown.
+    """"""
+    # This check assumes that Markdown response must contain specific Markdown elements like headings or lists
+    return response.count(""# "") > 0 or response.count(""- "") > 0
 ","async def assert_context_includes_title_speaker_theme(
     example: dict, prompt: str, response: str
 ):
@@ -24902,6 +25323,19 @@ func A,func B,A -> B,asked_LLM
     )  # Arbitrarily assumes thesis should be longer than 5 words
     return has_central_thesis
 ",False,False
+"async def assert_has_context(example: dict, prompt: str, response: str) -> bool:
+    """"""
+    Check that the LLM response begins with context including the title, speaker or author,
+    and overarching subject or theme of the discussion or lecture.
+    """"""
+    return response.lower().startswith(""context:"")
+","async def assert_response_includes_context(example: dict, prompt: str, response: str):
+    """"""
+    Check if the response includes context at the beginning with the title, speaker/author,
+    and overarching theme.
+    """"""
+    return ""Title:"" in response and ""Speaker:"" in response and ""Subject:"" in response
+",True,False
 "async def assert_has_glossary_of_terms(
     example: dict, prompt: str, response: str
 ) -> bool:
@@ -26312,19 +26746,6 @@ func A,func B,A -> B,asked_LLM
     Check that the response clearly articulates the central thesis or main argument of the discussion.
     """"""
     return ""central thesis:"" in response.lower()
-","async def assert_response_contains_central_thesis(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check that the response contains a clearly articulated central thesis or main argument.
-    """"""
-    return ""**Thesis:**"" in response
-",False,False
-"async def assert_has_central_thesis(example: dict, prompt: str, response: str) -> bool:
-    """"""
-    Check that the response clearly articulates the central thesis or main argument of the discussion.
-    """"""
-    return ""central thesis:"" in response.lower()
 ","async def assert_response_has_at_least_3_key_points(
     example: dict, prompt: str, response: str
 ):
@@ -26594,6 +27015,29 @@ func A,func B,A -> B,asked_LLM
     )  # Arbitrarily assumes thesis should be longer than 5 words
     return has_central_thesis
 ",False,False
+"async def assert_has_key_points(example: dict, prompt: str, response: str) -> bool:
+    """"""
+    Check that the response lists at least 3-5 key points using bullet points.
+    """"""
+    key_points_index = response.lower().find(""key points:"")
+    list_start_index = response[key_points_index:].find(""-"")
+    bullets = response[key_points_index + list_start_index :].count(""-"")
+    return bullets >= 3 and bullets <= 5
+","async def assert_minimum_key_points_listed(example: dict, prompt: str, response: str):
+    """"""
+    Check that the response lists at least 3 key points.
+    """"""
+    return (
+        len(
+            [
+                point
+                for point in response.split(""-"")
+                if ""Key Points:"" in point or ""point:"" in point
+            ]
+        )
+        >= 3
+    )
+",True,False
 "async def assert_has_conclusions_and_takeaways(
     example: dict, prompt: str, response: str
 ) -> bool:
@@ -27097,6 +27541,21 @@ func A,func B,A -> B,asked_LLM
     significant_details_heading = ""Significant Details:""
     return significant_details_heading in response
 ",False,False
+"async def assert_has_conclusions_and_takeaways(
+    example: dict, prompt: str, response: str
+) -> bool:
+    """"""
+    Check that the response includes conclusions and takeaways summarizing the overall implications
+    of the discussion and any actionable insights.
+    """"""
+    return ""conclusions and takeaways:"" in response.lower()
+","async def assert_conclusions_and_takeaways(example: dict, prompt: str, response: str):
+    """"""
+    Check if the conclusion and takeaways of the talk are summarized in the response.
+    """"""
+    conclusions_heading = ""Conclusions and Takeaways:""
+    return conclusions_heading in response
+",True,False
 "async def assert_has_conclusions_and_takeaways(
     example: dict, prompt: str, response: str
 ) -> bool:
@@ -29562,6 +30021,43 @@ func A,func B,A -> B,asked_LLM
     )  # Arbitrarily assumes thesis should be longer than 5 words
     return has_central_thesis
 ",False,False
+"async def assert_response_begins_with_context_2(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check that the response begins with context, including the title, the speaker or author,
+    and the overarching subject or theme.
+    """"""
+    return (
+        response.startswith(""**Title:**"")
+        and (""**Author:**"" in response)
+        and (""**Subject:**"" in response)
+    )
+","async def assert_response_includes_context(example: dict, prompt: str, response: str):
+    """"""
+    Check if the response includes context at the beginning with the title, speaker/author,
+    and overarching theme.
+    """"""
+    return ""Title:"" in response and ""Speaker:"" in response and ""Subject:"" in response
+",True,False
+"async def assert_response_begins_with_context_2(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check that the response begins with context, including the title, the speaker or author,
+    and the overarching subject or theme.
+    """"""
+    return (
+        response.startswith(""**Title:**"")
+        and (""**Author:**"" in response)
+        and (""**Subject:**"" in response)
+    )
+","async def assert_contains_context_section(example: dict, prompt: str, response: str):
+    """"""
+    Check if the LLM response begins with a 'Context' section, including title, speaker/author, and subject/theme.
+    """"""
+    return response.startswith(""**Context:**"")
+",True,False
 "async def assert_response_has_at_least_3_key_points(
     example: dict, prompt: str, response: str
 ):
@@ -29995,6 +30491,35 @@ func A,func B,A -> B,asked_LLM
         return len(key_points) >= 3
     except:
         return False
+","async def assert_minimum_key_points_listed(example: dict, prompt: str, response: str):
+    """"""
+    Check that the response lists at least 3 key points.
+    """"""
+    return (
+        len(
+            [
+                point
+                for point in response.split(""-"")
+                if ""Key Points:"" in point or ""point:"" in point
+            ]
+        )
+        >= 3
+    )
+",False,False
+"async def assert_response_has_at_least_3_key_points(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check that the response lists at least 3 key points in a bulleted format.
+    """"""
+    try:
+        key_points_section = response.split(""**Key Points:**"")[1]
+        key_points = [
+            point for point in key_points_section.split(""\n"") if point.startswith(""-"")
+        ]
+        return len(key_points) >= 3
+    except:
+        return False
 ","async def assert_no_excessive_details(example: dict, prompt: str, response: str):
     """"""
     Assert that the summary does not dwell into excessive details and maintains a focus on key points.
@@ -30098,18 +30623,15 @@ func A,func B,A -> B,asked_LLM
         return len(key_points) >= 3
     except:
         return False
-","async def assert_key_points_are_bullet_points(
+","async def assert_minimum_number_of_key_points(
     example: dict, prompt: str, response: str
 ):
     """"""
-    Check if key points are formatted as bullet points for easy readability.
+    Check if there are at least 3-5 key points listed in the response.
     """"""
-    key_points_heading = ""Key Points:""
-    key_points_index = response.find(key_points_heading)
-    return (
-        response[key_points_index:].count(""\n- "") >= 3
-    )  # Looking for newline followed by ""- ""
-",True,False
+    count = response.count(""-"")  # Assuming bullet points start with ""-""
+    return 3 <= count <= 5
+",False,False
 "async def assert_response_has_at_least_3_key_points(
     example: dict, prompt: str, response: str
 ):
@@ -30172,6 +30694,29 @@ func A,func B,A -> B,asked_LLM
     and overarching subject or theme of the discussion or lecture.
     """"""
     return response.lower().startswith(""context:"")
+",False,False
+"async def assert_response_has_at_least_3_key_points(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check that the response lists at least 3 key points in a bulleted format.
+    """"""
+    try:
+        key_points_section = response.split(""**Key Points:**"")[1]
+        key_points = [
+            point for point in key_points_section.split(""\n"") if point.startswith(""-"")
+        ]
+        return len(key_points) >= 3
+    except:
+        return False
+","async def assert_has_key_points(example: dict, prompt: str, response: str) -> bool:
+    """"""
+    Check that the response lists at least 3-5 key points using bullet points.
+    """"""
+    key_points_index = response.lower().find(""key points:"")
+    list_start_index = response[key_points_index:].find(""-"")
+    bullets = response[key_points_index + list_start_index :].count(""-"")
+    return bullets >= 3 and bullets <= 5
 ",False,False
 "async def assert_response_has_at_least_3_key_points(
     example: dict, prompt: str, response: str
@@ -30347,26 +30892,6 @@ func A,func B,A -> B,asked_LLM
     )
     return await ask_llm(prompt, response, question)
 ",False,False
-"async def assert_response_has_at_least_3_key_points(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check that the response lists at least 3 key points in a bulleted format.
-    """"""
-    try:
-        key_points_section = response.split(""**Key Points:**"")[1]
-        key_points = [
-            point for point in key_points_section.split(""\n"") if point.startswith(""-"")
-        ]
-        return len(key_points) >= 3
-    except:
-        return False
-","async def assert_bullet_points_key_points(example: dict, prompt: str, response: str):
-    """"""
-    Check that the key points in the response are enumerated using bullet points.
-    """"""
-    return ""- "" in response
-",True,False
 "async def assert_response_has_at_least_3_key_points(
     example: dict, prompt: str, response: str
 ):
@@ -30687,6 +31212,22 @@ func A,func B,A -> B,asked_LLM
     and any actionable insights in the conclusions and takeaways section.
     """"""
     return ""**Conclusions and Takeaways:**"" in response
+","async def assert_response_summarizes_implications(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check if the response summarizes the overall implications and actionable insights.
+    """"""
+    return ""Conclusions and Takeaways:"" in response
+",True,False
+"async def assert_conclusions_and_takeaways_present(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check that the response summarizes the overall implications of the discussion
+    and any actionable insights in the conclusions and takeaways section.
+    """"""
+    return ""**Conclusions and Takeaways:**"" in response
 ","async def assert_response_mentions_personal_insights(
     example: dict, prompt: str, response: str
 ):
@@ -30830,22 +31371,6 @@ func A,func B,A -> B,asked_LLM
     """"""
     return ""significant details:"" in response.lower()
 ",False,False
-"async def assert_conclusions_and_takeaways_present(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Check that the response summarizes the overall implications of the discussion
-    and any actionable insights in the conclusions and takeaways section.
-    """"""
-    return ""**Conclusions and Takeaways:**"" in response
-","async def assert_contains_conclusions_takeaways(
-    example: dict, prompt: str, response: str
-) -> bool:
-    """"""
-    Check that the response includes a section on conclusions and takeaways.
-    """"""
-    return ""conclusions and takeaways:"" in response.lower()
-",True,False
 "async def assert_conclusions_and_takeaways_present(
     example: dict, prompt: str, response: str
 ):
@@ -31079,6 +31604,21 @@ func A,func B,A -> B,asked_LLM
     and any actionable insights in the conclusions and takeaways section.
     """"""
     return ""**Conclusions and Takeaways:**"" in response
+","async def assert_conclusions_and_takeaways(example: dict, prompt: str, response: str):
+    """"""
+    Check if the conclusion and takeaways of the talk are summarized in the response.
+    """"""
+    conclusions_heading = ""Conclusions and Takeaways:""
+    return conclusions_heading in response
+",True,False
+"async def assert_conclusions_and_takeaways_present(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check that the response summarizes the overall implications of the discussion
+    and any actionable insights in the conclusions and takeaways section.
+    """"""
+    return ""**Conclusions and Takeaways:**"" in response
 ","async def assert_no_word_count_requirement(example: dict, prompt: str, response: str):
     """"""
     Check if there's no specific word count requirement mentioned in the response.
@@ -31118,6 +31658,23 @@ func A,func B,A -> B,asked_LLM
     bullets = response[key_points_index + list_start_index :].count(""-"")
     return bullets >= 3 and bullets <= 5
 ",False,False
+"async def assert_conclusions_and_takeaways_present(
+    example: dict, prompt: str, response: str
+):
+    """"""
+    Check that the response summarizes the overall implications of the discussion
+    and any actionable insights in the conclusions and takeaways section.
+    """"""
+    return ""**Conclusions and Takeaways:**"" in response
+","async def assert_has_conclusions_and_takeaways(
+    example: dict, prompt: str, response: str
+) -> bool:
+    """"""
+    Check that the response includes conclusions and takeaways summarizing the overall implications
+    of the discussion and any actionable insights.
+    """"""
+    return ""conclusions and takeaways:"" in response.lower()
+",True,False
 "async def assert_conclusions_and_takeaways_present(
     example: dict, prompt: str, response: str
 ):
@@ -32484,25 +33041,6 @@ func A,func B,A -> B,asked_LLM
     """"""
     question = ""Does the response maintain the essence of the discussion and create a succinct summary?""
     return await ask_llm(prompt, response, question)
-",False,False
-"async def assert_exclusion_of_irrelevant_information(
-    example: dict, prompt: str, response: str
-):
-    """"""
-    Use an LLM to determine if the response excludes any information not relevant to the summary,
-    such as personal opinions or information outside of the original discussion.
-    """"""
-    question = ""Does the response exclude any information not relevant to the summary, such as personal opinions or information outside the boundaries of the original discussion?""
-    return await ask_llm(prompt, response, question)
-","async def assert_response_free_from_personal_opinions(
-    example: dict, prompt: str, response: str
-) -> bool:
-    """"""
-    Check that the response is free from opinions, as the section for personal insights or criticisms is removed.
-    """"""
-    question = ""Does the response include any personal insights or criticisms, contradicting the requirement to be free from opinions?""
-    # We expect a False response here, so we negate the response from the LLM.
-    return not await ask_llm(prompt, response, question)
 ",False,False
 "async def assert_exclusion_of_irrelevant_information(
     example: dict, prompt: str, response: str
@@ -37161,22 +37699,6 @@ func A,func B,A -> B,asked_LLM
     question = ""Does the response include any personal insights or criticisms, contradicting the requirement to be free from opinions?""
     # We expect a False response here, so we negate the response from the LLM.
     return not await ask_llm(prompt, response, question)
-",False,False
-"async def assert_clear_central_thesis(example: dict, prompt: str, response: str):
-    """"""
-    Check that the response clearly articulates the central thesis or main argument
-    of the discussion.
-    """"""
-    question = ""Does the response clearly articulate the central thesis or main argument of the discussion?""
-    return await ask_llm(prompt, response, question)
-","async def assert_response_clearly_a_summary(
-    example: dict, prompt: str, response: str
-) -> bool:
-    """"""
-    Check that the response clearly indicates it is a summary and not the original content.
-    """"""
-    question = ""Is it clear from the response that it is a summary and not the original content?""
-    return await ask_llm(prompt, response, question)
 ",False,False
 "async def assert_clear_central_thesis(example: dict, prompt: str, response: str):
     """"""
