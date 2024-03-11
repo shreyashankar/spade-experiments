@@ -205,8 +205,11 @@ def main():
     ):
         prompt = generate_prompt(curr_template, prev_template)
         print("Sending new request:", prompt)
-        reply = list(model.completion_stream.remote_gen(prompt))
-        reply = "".join(reply)
+
+        reply = ""
+        for token in model.completion_stream.remote_gen(prompt):
+            print(token)
+            reply += token
 
         print(f"Raw reply: {reply}")
 
