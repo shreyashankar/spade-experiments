@@ -14,10 +14,18 @@ async def execute_pipeline_on_examples(
     dataset_name: str,
     allow_gpt4: bool = True,
 ):
+    path = (
+        f"paper_experiments/{dataset_name}"
+        if dataset_name not in ["medical", "product"]
+        else f"evalgen_experiments/{dataset_name}"
+    )
+
     # First see if these examples have already been processed
     # Hash the examples
     h = hashlib.sha256(str(examples).encode("utf-8")).hexdigest()
-    path_name = f"/Users/shreyashankar/Documents/projects/promptdelta/paper_experiments/{dataset_name}/{h}.csv"
+    path_name = (
+        f"/Users/shreyashankar/Documents/projects/spade-experiments/{path}/{h}.csv"
+    )
     print(h)
     if os.path.exists(path_name):
         print("Found cached results")
@@ -126,7 +134,14 @@ async def execute_candidate_assertions(
     examples: List[Dict],
     assertions: List[Callable],
     allow_gpt4: bool = True,
+    reply_df=None,
 ):
+    path = (
+        f"paper_experiments/{dataset_name}"
+        if dataset_name not in ["medical", "product"]
+        else f"evalgen_experiments/{dataset_name}"
+    )
+
     source_codes = str([inspect.getsource(func) for func in assertions])
     # h = hash(str(examples) + prompt_template + str(source_codes))
     h = hashlib.sha256(
@@ -135,15 +150,16 @@ async def execute_candidate_assertions(
         + source_codes.encode("utf-8")
     ).hexdigest()
     print(h)
-    path_name = f"/Users/shreyashankar/Documents/projects/promptdelta/paper_experiments/{dataset_name}/assertion_res_{h}.csv"
+    path_name = f"/Users/shreyashankar/Documents/projects/spade-experiments/{path}/assertion_res_{h}.csv"
     if os.path.exists(path_name):
         print("Found cached results")
         return pd.read_csv(path_name)
 
     # Load replies
-    reply_df = await execute_pipeline_on_examples(
-        prompt_template, examples, dataset_name, allow_gpt4
-    )
+    if reply_df is None or reply_df.empty:
+        reply_df = await execute_pipeline_on_examples(
+            prompt_template, examples, dataset_name, allow_gpt4
+        )
     all_results = []
 
     for _, row in reply_df.iterrows():

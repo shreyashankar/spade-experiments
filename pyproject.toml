@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Suggesting evals by analyzing deltas in consecutive prompt versions."
 authors = ["Shreya Shankar <ss.shankar505@gmail.com>"]
 readme = "README.md"
-packages = [{include = "spade_v3"}]
+packages = [{include = "spade"}]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<3.13"
