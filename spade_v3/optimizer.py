@@ -1,6 +1,7 @@
 """
 This file optimizes the functions based on the coverage and false failure rate.
 """
+import time
 import pulp
 import pickle
 
@@ -344,7 +345,7 @@ def optimize(m, n, M, K, y, tau, alpha, spade_functions, func_order):
 
 
 # Function to run the pipeline
-def select_functions(filename: str, tau=0.25, alpha=0.9):
+def select_functions(filename: str, tau=0.25, alpha=0.9, track_time: bool = False):
     with open(filename, "rb") as f:
         optimizer_input = pickle.load(f)
         y = optimizer_input["y"]
@@ -371,6 +372,10 @@ def select_functions(filename: str, tau=0.25, alpha=0.9):
     ]
     # print(f"Eligible functions: {eligible_function_names}")
 
+    runtimes = {}
+    if track_time:
+        start = time.time()
+
     # Run cov optimizer
     (
         cov_selected_functions,
@@ -382,6 +387,10 @@ def select_functions(filename: str, tau=0.25, alpha=0.9):
         m, n, M, K, y, tau, alpha, spade_functions, func_order
     )
 
+    if track_time:
+        runtimes["cov"] = time.time() - start
+        start = time.time()
+
     (
         selected_functions,
         coverage_percentage,
@@ -389,6 +398,10 @@ def select_functions(filename: str, tau=0.25, alpha=0.9):
         frac_functions_selected,
         not_subsumed_excluded_functions,
     ) = optimize(m, n, M, K, y, tau, alpha, spade_functions, func_order)
+
+    if track_time:
+        runtimes["sub"] = time.time() - start
+
     # Print name of selected functions
     selected_function_names = [
         name for name, idx in func_order.items() if idx in selected_functions
@@ -438,4 +451,5 @@ def select_functions(filename: str, tau=0.25, alpha=0.9):
         "spade_sub": spade_sub,
         "tau": tau,
         "alpha": alpha,
+        "runtimes": runtimes,
     }
