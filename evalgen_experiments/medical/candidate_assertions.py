@@ -1,13 +1,13 @@
 from litellm import acompletion
 
 
-async def ask_llm(prompt, response, question):
+async def ask_llm(response, question):
     # Placeholder for asking an expert a true/false question
     # In practice, this would involve a complex implementation potentially requiring human input
 
     messages = [
         {
-            "content": f"You are a helpful assistant. Here is the prompt:\n\n{prompt}\n\nHere is the response:\n{response}",
+            "content": f"You are an expert evaluator. Here is the response:\n\n{response}",
             "role": "system",
         },
         {
@@ -34,9 +34,7 @@ async def ask_llm(prompt, response, question):
     return prompt_tokens, completion_tokens, False
 
 
-async def assert_response_bullet_list_format(
-    example: dict, prompt: str, response: str
-) -> bool:
+async def assert_response_bullet_list_format(response: str) -> bool:
     """
     Checks if the response is formatted as a bullet list.
     """
@@ -45,9 +43,7 @@ async def assert_response_bullet_list_format(
     )
 
 
-async def assert_response_bullet_key_value_format(
-    example: dict, prompt: str, response: str
-) -> bool:
+async def assert_response_bullet_key_value_format(response: str) -> bool:
     """
     Checks if each bullet in the response is formatted with `key: value.`
     """
@@ -55,9 +51,7 @@ async def assert_response_bullet_key_value_format(
     return all(":" in bullet and bullet.endswith(".") for bullet in bullets)
 
 
-async def assert_response_has_required_keys_with_na(
-    example: dict, prompt: str, response: str
-) -> bool:
+async def assert_response_has_required_keys_with_na(response: str) -> bool:
     """
     Checks if the response contains the required keys with `N/A` for missing values.
     """
@@ -72,7 +66,7 @@ async def assert_response_has_required_keys_with_na(
     return all(key in response for key in required_keys) or "N/A" in response
 
 
-async def assert_no_pii_in_response(example: dict, prompt: str, response: str) -> bool:
+async def assert_no_pii_in_response(response: str) -> bool:
     """
     Checks if the response does not contain any personal identifiable information (PII).
     """
@@ -80,23 +74,15 @@ async def assert_no_pii_in_response(example: dict, prompt: str, response: str) -
     return not any(pii in response for pii in pii_keywords)
 
 
-async def assert_use_of_the_patient_instead_of_name(
-    example: dict, prompt: str, response: str
-) -> bool:
+async def assert_use_of_the_patient_instead_of_name(response: str) -> bool:
     """
     Checks if 'the patient' is used instead of personal names in the response.
     """
-    patient_name = example["document"].split("Patient Name")[1]
 
-    # Get everything up to newline
-    patient_name = patient_name.split("\n")[0].strip().lower()
-
-    return patient_name not in response and "the patient" in response.lower()
+    return "the patient" in response.lower()
 
 
-async def assert_inclusion_of_specific_keys(
-    example: dict, prompt: str, response: str
-) -> bool:
+async def assert_inclusion_of_specific_keys(response: str) -> bool:
     """
     Checks if the response contains extracted values for specific keys: Chief complaint, History of present illness,
     Physical examination, Symptoms, New medications, and Follow-up instructions.
@@ -112,9 +98,7 @@ async def assert_inclusion_of_specific_keys(
     return all(key in response for key in required_keys)
 
 
-async def assert_response_under_word_limit(
-    example: dict, prompt: str, response: str
-) -> bool:
+async def assert_response_under_word_limit(response: str) -> bool:
     """
     Checks if the response is under 100 words.
     """
@@ -122,38 +106,32 @@ async def assert_response_under_word_limit(
     return word_count <= 100
 
 
-async def assert_adheres_to_workflow(example: dict, prompt: str, response: str) -> bool:
+async def assert_adheres_to_workflow(response: str) -> bool:
     """
     Checks if the LLM response adheres to the workflow of extracting insights from medical records that include a
     medical note and a doctor-patient dialogue.
     """
     workflow_description = "extracting insights from medical records that include a medical note and a doctor-patient dialogue"
-    return workflow_description in prompt
+    return workflow_description in response
 
 
-async def assert_adherence_to_extraction_without_demos(
-    example: dict, prompt: str, response: str
-) -> bool:
+async def assert_adherence_to_extraction_without_demos(response: str) -> bool:
     """
     Checks if the LLM response adheres to the instructions of extracting values without providing any examples or demonstrations.
     """
     question = "Does the response properly extract values without providing examples or demonstrations?"
-    return await ask_llm(prompt, response, question)
+    return await ask_llm(response, question)
 
 
-async def assert_adherence_to_formal_clinical_tone(
-    example: dict, prompt: str, response: str
-) -> bool:
+async def assert_adherence_to_formal_clinical_tone(response: str) -> bool:
     """
     Checks if the response maintains a formal and clinical tone appropriate for medical record analysis.
     """
     question = "Does the response maintain a formal and clinical tone appropriate for medical record analysis?"
-    return await ask_llm(prompt, response, question)
+    return await ask_llm(response, question)
 
 
-async def assert_bullet_list_correct_format(
-    example: dict, prompt: str, response: str
-) -> bool:
+async def assert_bullet_list_correct_format(response: str) -> bool:
     """
     Verifies if the response is formatted as a bullet list with each bullet point following the
     format `key: value.`.
@@ -165,9 +143,7 @@ async def assert_bullet_list_correct_format(
     )
 
 
-async def assert_headers_correspondence_to_prompt(
-    example: dict, prompt: str, response: str
-) -> bool:
+async def assert_headers_correspondence_to_prompt(response: str) -> bool:
     """
     Checks if each bullet in the response has headers corresponding to the data points to be
     extracted as per the prompt.
@@ -186,22 +162,7 @@ async def assert_headers_correspondence_to_prompt(
     )
 
 
-async def assert_placeholder_usage_correctly(
-    example: dict, prompt: str, response: str
-) -> bool:
-    """
-    Confirms that placeholders are used for the patient's name in the response.
-    """
-    patient_name = example["document"].split("Patient Name")[1]
-
-    # Get everything up to newline
-    patient_name = patient_name.split("\n")[0].strip().lower()
-    return patient_name not in response.lower()
-
-
-async def assert_na_usage_for_missing_data(
-    example: dict, prompt: str, response: str
-) -> bool:
+async def assert_na_usage_for_missing_data(response: str) -> bool:
     """
     Checks if 'N/A' is used appropriately for data points that are not available.
     """
@@ -226,7 +187,7 @@ async def assert_na_usage_for_missing_data(
     return check_meds and check_followup
 
 
-async def assert_adjusted_word_count(example: dict, prompt: str, response: str) -> bool:
+async def assert_adjusted_word_count(response: str) -> bool:
     """
     Verifies if the response is around 150 words, to ensure summarization when necessary.
     """
@@ -234,30 +195,25 @@ async def assert_adjusted_word_count(example: dict, prompt: str, response: str) 
     return 100 <= word_count <= 200  # Little flexibility given the approximation
 
 
-async def assert_no_pii_present(example: dict, prompt: str, response: str) -> bool:
+async def assert_no_pii_present(response: str) -> bool:
     """
     Verifies that no personal identifiable information (PII) is present in the response.
     """
     return await ask_llm(
-        prompt,
         response,
         f"In the response, is there any personal identifiable information (PII) such as name, age, gender, or ID?",
     )
 
 
-async def assert_neutral_clinical_tone(
-    example: dict, prompt: str, response: str
-) -> bool:
+async def assert_neutral_clinical_tone(response: str) -> bool:
     """
     Determines if the tone of the response is neutral, professional, and objective.
     """
     question = "Is the tone of the response neutral, professional, and objective?"
-    return await ask_llm(prompt, response, question)
+    return await ask_llm(response, question)
 
 
-async def assert_explicit_na_if_no_meds_changed(
-    example: dict, prompt: str, response: str
-) -> bool:
+async def assert_explicit_na_if_no_meds_changed(response: str) -> bool:
     """
     Checks if the response explicitly states 'N/A' for dosages when no new medications are prescribed or changed.
     """
@@ -266,9 +222,7 @@ async def assert_explicit_na_if_no_meds_changed(
     return True  # Should return true if the segment is present, to not be consequential
 
 
-async def assert_explicit_na_if_no_follow_up(
-    example: dict, prompt: str, response: str
-) -> bool:
+async def assert_explicit_na_if_no_follow_up(response: str) -> bool:
     """
     Checks if the response explicitly states 'N/A' for follow-up instructions when no follow-up details are provided.
     """
@@ -277,9 +231,7 @@ async def assert_explicit_na_if_no_follow_up(
     return True  # Should return true if the segment is present, to not be consequential
 
 
-async def assert_correct_header_order_maintained(
-    example: dict, prompt: str, response: str
-) -> bool:
+async def assert_correct_header_order_maintained(response: str) -> bool:
     """
     Verifies the response adheres to the header order as requested in the prompt.
     """
@@ -300,14 +252,12 @@ async def assert_correct_header_order_maintained(
     return headers_found == required_order
 
 
-async def assert_data_points_filled_completely(
-    example: dict, prompt: str, response: str
-) -> bool:
+async def assert_data_points_filled_completely(response: str) -> bool:
     """
     Ensures that each data point extracted is complete, and no relevant details are missing.
     """
     question = "Are all relevant details included for each section listed, with nothing significant omitted?"
-    return await ask_llm(prompt, response, question)
+    return await ask_llm(response, question)
 
 
 # Include a variable called ALL_FUNCTIONS with a list of function names
@@ -324,7 +274,6 @@ ALL_FUNCTIONS = [
     assert_adherence_to_formal_clinical_tone,
     assert_bullet_list_correct_format,
     assert_headers_correspondence_to_prompt,
-    assert_placeholder_usage_correctly,
     assert_na_usage_for_missing_data,
     assert_adjusted_word_count,
     assert_no_pii_present,

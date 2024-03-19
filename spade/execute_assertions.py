@@ -176,7 +176,12 @@ async def execute_candidate_assertions(
                 # Evaluate the value
                 example = eval(example["pr_webhook_payload"])
 
-            tasks.append(func(example, row["prompt"], row["response"]))
+            # check if func takes 3 arguments
+            if len(inspect.signature(func).parameters) == 3:
+                tasks.append(func(example, row["prompt"], row["response"]))
+            else:
+                tasks.append(func(row["response"]))
+
             row_dict = row.to_dict()
             row_dict["function_name"] = func.__name__
             rows.append(row_dict)
