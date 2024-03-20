@@ -1,6 +1,7 @@
 """
 This file represents the assertion concept and candidate generator. It takes in a prompt template and outputs a set of assertion concepts to check for, based on our taxonomy of assertion concept categories. Then it synthesizes python functions.
 """
+
 import json
 import difflib
 
@@ -22,7 +23,7 @@ from typing import List, Dict
 
 import litellm
 
-from spade_v3.assertion_gen import generate_assertions
+from spade.assertion_gen import generate_assertions
 
 # from litellm import RateLimitManager
 
@@ -131,7 +132,8 @@ async def generate_concepts_and_assertions(
 
 
 async def generate_candidate_assertions(
-    prompt_templates: List[str], example_variables: Dict[str, str]
+    prompt_templates: List[str],
+    example_variables: Dict[str, str],
 ) -> List[str]:
     all_assertions = []
     all_concepts = []
